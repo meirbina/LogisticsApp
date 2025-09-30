@@ -1,0 +1,105 @@
+@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Released Shipments for Collection";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header"><h6 class="m-0 font-weight-bold text-primary">Shipments Awaiting Collection</h6></div>
+    <div class="card-body">
+        <table class="table table-bordered" id="releasedTable">
+            <thead>
+            <tr>
+                <th>Waybill</th>
+                <th>Sender</th>
+                <th>Sender Phone</th>
+                <th>Receiver</th>
+                <th>Receiver Phone</th>
+                <th>Weight (kg)</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.WaybillNumber</td>
+                    <td>@item.SenderName</td>
+                    <td>@item.SenderPhoneNumber</td>
+                    <td>@item.ReceiverName</td>
+                    <td>@item.ReceiverPhoneNumber</td>
+                    <td>@item.TotalWeight.ToString("N2")</td>
+                    <td><span class="badge badge-warning">Awaiting Collection</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-success release-btn"
+                                data-waybill="@item.WaybillNumber"
+                                data-toggle="modal"
+                                data-target="#releaseModal">Release</button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Release Modal -->
+<div class="modal fade" id="releaseModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form asp-action="Release" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title">Release Shipment: <span id="waybillLabel" class="font-weight-bold"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="waybillInput" name="WaybillNumber" />
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>Enter Receiver Name</label>
+                            <input name="CollectedByName" class="form-control" required/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Enter Receiver Phone</label>
+                            <input name="CollectedByPhone" class="form-control" required/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Enter Receiver Address</label>
+                        <textarea name="CollectedByAddress" rows="2" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Means of ID</label>
+                        <input name="MeansOfId" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Additional Comment</label>
+                        <textarea name="Comment" rows="2" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Release Shipment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function() {
+            $('#releasedTable').DataTable();
+
+            $('.release-btn').on('click', function() {
+                var waybill = $(this).data('waybill');
+                $('#waybillLabel').text(waybill);
+                $('#waybillInput').val(waybill);
+            });
+        });
+    </script>
+}

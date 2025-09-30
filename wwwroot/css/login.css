@@ -1,0 +1,368 @@
+/*!* Sets up the full-screen background and perfect centering *!*/
+/*body.login-page-body {*/
+/*    background: url('https://images.unsplash.com/photo-1537202108838-e7072bad1927?q=80&w=746&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;*/
+/*    background-size: cover;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    min-height: 100vh;*/
+/*    font-family: 'Roboto', sans-serif;*/
+/*}*/
+
+/*!* Main container for the two panels *!*/
+/*.login-container {*/
+/*    display: flex;*/
+/*    width: 950px;*/
+/*    max-width: 95%;*/
+/*    min-height: 600px;*/
+/*    background: #1e1e1e; !* A slightly softer dark color *!*/
+/*    border-radius: 20px;*/
+/*    overflow: hidden;*/
+/*    box-shadow: 0 20px 40px rgba(0,0,0,0.5);*/
+/*}*/
+
+/*!* Left "Info" Panel *!*/
+/*.login-info-panel {*/
+/*    width: 45%;*/
+/*    padding: 40px;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    text-align: center;*/
+/*    color: white;*/
+/*    background: linear-gradient(135deg, #6237a0 0%, #d43f8d 100%);*/
+/*    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);*/
+/*}*/
+
+/*.info-content h2 {*/
+/*    font-weight: 300;*/
+/*    margin-bottom: 15px;*/
+/*    letter-spacing: 1px;*/
+/*}*/
+
+/*.info-logo {*/
+/*    width: 80px;*/
+/*    height: 80px;*/
+/*    margin-bottom: 20px;*/
+/*    border-radius: 15px;*/
+/*}*/
+
+/*.address {*/
+/*    font-size: 14px;*/
+/*    line-height: 1.6;*/
+/*    margin-bottom: 30px;*/
+/*    opacity: 0.9;*/
+/*}*/
+
+/*.social-icons {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*}*/
+
+/*.social-icon {*/
+/*    width: 40px;*/
+/*    height: 40px;*/
+/*    border-radius: 10px;*/
+/*    background: rgba(255, 255, 255, 0.15);*/
+/*    margin: 0 8px;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    color: white;*/
+/*    text-decoration: none;*/
+/*    font-size: 16px;*/
+/*    transition: background-color 0.3s;*/
+/*}*/
+
+/*.social-icon:hover {*/
+/*    background: rgba(255, 255, 255, 0.3);*/
+/*}*/
+
+/*!* Right "Form" Panel *!*/
+/*.login-form-panel {*/
+/*    width: 55%;*/
+/*    padding: 40px;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*}*/
+
+/*.form-content {*/
+/*    width: 100%;*/
+/*    max-width: 350px;*/
+/*    text-align: center;*/
+/*}*/
+
+/*.form-logo {*/
+/*    width: 70px;*/
+/*    height: 70px;*/
+/*    margin-bottom: 10px;*/
+/*}*/
+
+/*.form-content h1 {*/
+/*    color: #fff;*/
+/*    font-weight: 300;*/
+/*    font-size: 2.5rem;*/
+/*    margin-bottom: 30px;*/
+/*}*/
+
+/*!* New input field styling *!*/
+/*.form-input-container {*/
+/*    position: relative;*/
+/*}*/
+
+/*.input-icon {*/
+/*    position: absolute;*/
+/*    left: 20px;*/
+/*    top: 50%;*/
+/*    transform: translateY(-50%);*/
+/*    color: #888;*/
+/*}*/
+
+/*.form-control {*/
+/*    background-color: #2b2b2b;*/
+/*    border: 1px solid #444;*/
+/*    color: #fff;*/
+/*    border-radius: 30px;*/
+/*    height: 50px;*/
+/*    padding-left: 50px; !* Make space for the icon *!*/
+/*    transition: border-color 0.3s;*/
+/*}*/
+
+/*.form-control::placeholder {*/
+/*    color: #888;*/
+/*}*/
+
+/*.form-control:focus {*/
+/*    background-color: #2b2b2b;*/
+/*    border-color: #9b59b6;*/
+/*    color: #fff;*/
+/*    box-shadow: 0 0 0 0.25rem rgba(155, 89, 182, 0.25);*/
+/*}*/
+
+/*.form-check-input {*/
+/*    background-color: #444;*/
+/*    border-color: #666;*/
+/*}*/
+/*.form-check-input:checked {*/
+/*    background-color: #9b59b6;*/
+/*    border-color: #9b59b6;*/
+/*}*/
+
+/*.form-check label {*/
+/*    color: #ccc;*/
+/*    font-weight: normal;*/
+/*}*/
+
+/*.forgot-password-link {*/
+/*    color: #ccc;*/
+/*    font-size: 14px;*/
+/*    text-decoration: none;*/
+/*}*/
+/*.forgot-password-link:hover {*/
+/*    color: #fff;*/
+/*}*/
+
+/*.btn-login {*/
+/*    border-radius: 30px;*/
+/*    padding: 12px 20px;*/
+/*    font-weight: bold;*/
+/*    font-size: 1rem;*/
+/*    letter-spacing: 1px;*/
+/*    background-color: #fff;*/
+/*    color: #212529;*/
+/*    border: none;*/
+/*    transition: all 0.3s ease;*/
+/*}*/
+
+/*.btn-login:hover {*/
+/*    background-color: #f0f0f0;*/
+/*    transform: translateY(-3px);*/
+/*    box-shadow: 0 4px 8px rgba(0,0,0,0.2);*/
+/*}*/
+
+/*.copyright {*/
+/*    margin-top: 40px;*/
+/*    color: #6c757d;*/
+/*    font-size: 13px;*/
+/*}*/
+
+
+
+
+
+
+
+
+
+
+/* Sets up the full-screen background and perfect centering */
+/*body.login-page-body {*/
+/*    background-color: #f7f8f9; !* A very light, soft grey background *!*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    min-height: 100vh;*/
+/*    font-family: 'Poppins', sans-serif;*/
+/*    color: #555;*/
+/*}*/
+
+body.login-page-body {
+    background: url('https://images.unsplash.com/photo-1537202108838-e7072bad1927?q=80&w=746&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat
+    center center fixed;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* The main login card that is centered on the page */
+.login-card {
+    width: 100%;
+    max-width: 450px;
+    background: #ffffff;
+    padding: 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.login-header {
+    margin-bottom: 2rem;
+}
+
+.login-logo {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+}
+
+.login-card h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.login-card .sub-text {
+    font-size: 1rem;
+    color: #777;
+}
+
+.login-card .sub-text a {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* Form element styling */
+.form-floating > .form-control {
+    height: 55px;
+    border-radius: 0.5rem;
+    border: 1px solid #e0e0e0;
+}
+
+.form-floating > .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+.form-floating > label {
+    padding: 1rem 1.25rem;
+    color: #999;
+}
+
+.forgot-password-link {
+    display: block;
+    text-align: right;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+/* Button Styling */
+.btn-login-main {
+    background-color: #0d6efd;
+    backgrou
+    color: white;
+    font-weight: 600;
+    padding: 0.8rem 1rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease;
+}
+
+.btn-login-main:hover {
+    background-color: #0b5ed7;
+    transform: translateY(-2px);
+}
+
+/* Divider "OR" styling */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #ccc;
+    margin: 2rem 0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.divider:not(:empty)::before {
+    margin-right: .5em;
+}
+
+.divider:not(:empty)::after {
+    margin-left: .5em;
+}
+
+/* Social Login Buttons */
+.social-login-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn-social {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid #e0e0e0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #555;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-social:hover {
+    background-color: #f7f8f9;
+    border-color: #ccc;
+    transform: translateY(-2px);
+}
+
+/* SSO Button */
+.btn-sso {
+    background-color: #f7f8f9;
+    color: #555;
+    font-weight: 500;
+    padding: 0.8rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e0e0e0;
+}
+
+.btn-sso:hover {
+    background-color: #e9ecef;
+}

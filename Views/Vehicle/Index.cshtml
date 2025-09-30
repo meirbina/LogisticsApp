@@ -1,0 +1,35 @@
+@model IEnumerable<SMS.Models.Vehicle>
+@{
+    ViewData["Title"] = "Vehicle Registration";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Vehicle Registration</h6>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addModal">Register Vehicle</button>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered" id="vehicleTable">
+            <thead><tr><th>ID</th><th>Plate Number</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+            @foreach (var item in Model) {
+                <tr><td>@item.Id</td><td>@item.PlateNumber</td><td>@(item.IsActive ? "Active" : "Inactive")</td><td>@* Actions *@</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal"><div class="modal-dialog"><div class="modal-content">
+            <form asp-action="Create" method="post">
+                <div class="modal-header"><h5 class="modal-title">Register New Vehicle</h5></div>
+                <div class="modal-body">
+                    <div class="form-group"><label>Plate Number</label><input name="PlateNumber" class="form-control" required/></div>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button><button type="submit" class="btn btn-primary">Save</button></div>
+            </form>
+        </div></div></div>
+
+@section Scripts { <script> $(function() { $('#vehicleTable').DataTable(); }); </script> }

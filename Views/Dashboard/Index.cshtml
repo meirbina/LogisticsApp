@@ -1,0 +1,107 @@
+@using Newtonsoft.Json
+@model SMS.Models.ViewModels.DashboardVM
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid"><div class="row mb-2"><div class="col-sm-6"><h1 class="m-0">Dashboard</h1></div></div></div>
+</div>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <!-- Info boxes -->
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box"><span class="info-box-icon bg-info elevation-1"><i class="fas fa-shipping-fast"></i></span>
+                    <div class="info-box-content"><span class="info-box-text">Today's Shipments</span><span class="info-box-number" id="totalDailyShipments">@Model.TotalDailyShipments</span></div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3"><span class="info-box-icon bg-danger elevation-1"><i class="fas fa-store"></i></span>
+                    <div class="info-box-content"><span class="info-box-text">Registered Merchants</span><span class="info-box-number" id="totalRegisteredMerchants">@Model.TotalRegisteredMerchants</span></div>
+                </div>
+            </div>
+            <div class="clearfix hidden-md-up"></div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3"><span class="info-box-icon bg-success elevation-1"><i class="fas fa-handshake"></i></span>
+                    <div class="info-box-content"><span class="info-box-text">Today's Released</span><span class="info-box-number" id="totalDailyReleased">@Model.TotalDailyReleasedShipments</span></div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3"><span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+                    <div class="info-box-content"><span class="info-box-text">Active Employees</span><span class="info-box-number" id="totalActiveEmployees">@Model.TotalActiveEmployees</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card card-primary">
+                    <div class="card-header"><h3 class="card-title">Today's Shipments per Terminal</h3></div>
+                    <div class="card-body"><div class="chart"><canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas></div></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-box mb-3 bg-gradient-success">
+                    <span class="info-box-icon"><i class="fas fa-money-bill-wave"></i></span>
+                    <div class="info-box-content"><span class="info-box-text">Today's Total Sales</span><span class="info-box-number h3" id="totalDailySales">@Model.TotalDailySales.ToString("C", new System.Globalization.CultureInfo("en-NG"))</span></div>
+                </div>
+                <div class="card">
+                    <div class="card-header border-transparent"><h3 class="card-title">Recently Created Shipments</h3></div>
+                    <div class="card-body p-0"><div class="table-responsive">
+                            <table class="table m-0">
+                                <thead><tr><th>Waybill #</th><th>Sender</th><th>Receiver</th><th>Status</th></tr></thead>
+                                <tbody>
+                                @foreach(var item in Model.RecentShipments)
+                                {
+                                    <tr>
+                                        <td>@item.WaybillNumber</td>
+                                        <td>@item.SenderName</td>
+                                        <td>@item.ReceiverName</td>
+                                        <td><span class="badge badge-info">@item.Status</span></td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/plugins/chart.js/Chart.min.js"></script>
+    <script>
+        $(function () {
+            var areaChartData = {
+                labels  : @Html.Raw(JsonConvert.SerializeObject(Model.ShipmentsPerTerminalChart.Labels)),
+                datasets: [ {
+                    label: 'Number of Shipments', backgroundColor: 'rgba(60,141,188,0.9)', borderColor: 'rgba(60,141,188,0.8)',
+                    data: @Html.Raw(JsonConvert.SerializeObject(Model.ShipmentsPerTerminalChart.Data))
+                } ]
+            }
+            var barChartCanvas = $('#barChart').get(0).getContext('2d');
+            var barChartData = $.extend(true, {}, areaChartData);
+            var barChart = new Chart(barChartCanvas, {
+                type: 'bar', data: barChartData, options: { responsive: true, maintainAspectRatio: false, scales: { yAxes: [{ ticks: { beginAtZero: true, stepSize: 1 } }] } }
+            });
+
+            function updateStats() {
+                $.getJSON('@Url.Action("GetRealTimeStats", "Dashboard")', function (data) {
+                    $('#totalDailyShipments').text(data.totalDailyShipments);
+                    $('#totalDailyReleased').text(data.totalDailyReleasedShipments);
+                    $('#totalDailySales').text(new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(data.totalDailySales));
+                    barChart.data.labels = data.shipmentsPerTerminalChart.labels;
+                    barChart.data.datasets[0].data = data.shipmentsPerTerminalChart.data;
+                    barChart.update();
+                });
+            }
+            setInterval(updateStats, 30000);
+        });
+    </script>
+}

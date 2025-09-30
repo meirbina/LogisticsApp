@@ -1,0 +1,107 @@
+@model SMS.Models.ViewModels.ManifestVM
+@{
+    ViewData["Title"] = "Create New Manifest";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header"><h6 class="m-0 font-weight-bold text-primary">Manifest Generator</h6></div>
+    <div class="card-body">
+        <!-- Step 1: Filter Form -->
+        <form asp-action="FilterShipments" method="post">
+            @Html.AntiForgeryToken()
+            <h5>Step 1: Select Criteria and Filter</h5>
+            <div class="row align-items-end">
+                <div class="form-group col-md-3">
+                    <label asp-for="DepartureLocationId"></label>
+                    <!-- This dropdown now automatically shows "State ==> Location" -->
+                    <select asp-for="DepartureLocationId" asp-items="Model.LocationList" class="form-control"><option value="">-- Select --</option></select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label asp-for="DestinationLocationId"></label>
+                    <!-- This dropdown now automatically shows "State ==> Location" -->
+                    <select asp-for="DestinationLocationId" asp-items="Model.LocationList" class="form-control"><option value="">-- Select --</option></select>
+                </div>
+                <div class="form-group col-md-2"><label asp-for="StartDate"></label><input asp-for="StartDate" class="form-control" /></div>
+                <div class="form-group col-md-2"><label asp-for="EndDate"></label><input asp-for="EndDate" class="form-control" /></div>
+                <div class="form-group col-md-2"><button type="submit" class="btn btn-info btn-block">Filter Shipments</button></div>
+            </div>
+        </form>
+
+        <!-- Step 2: Manifest Generation -->
+        @if (Model.AvailableShipments != null && string.IsNullOrEmpty(Model.GeneratedManifestId))
+        {
+            <hr />
+            <form asp-action="GenerateManifest" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="DepartureLocationId" />
+                <input type="hidden" asp-for="DestinationLocationId" />
+                <input type="hidden" asp-for="StartDate" />
+                <input type="hidden" asp-for="EndDate" />
+                <h5>Step 2: Generate Manifest ID</h5>
+                <button type="submit" class="btn btn-primary">Generate Manifest Button</button>
+            </form>
+        }
+
+        <!-- Step 3: Add/Remove Shipments -->
+        @if (!string.IsNullOrEmpty(Model.GeneratedManifestId))
+        {
+            <hr />
+            <h5>Step 3: Add Shipments to Manifest ID: <span class="text-success font-weight-bold">@Model.GeneratedManifestId</span></h5>
+            <input type="hidden" id="manifestDbId" value="@Model.ManifestDbId" />
+            <div class="row mt-3">
+                <div class="col-md-6 border-right">
+                    <h6>Available Shipments</h6>
+                    <table class="table table-sm table-hover">
+                        <thead><tr><th>Waybill #</th><th>Date</th><th>Destination</th><th>Action</th></tr></thead>
+                        <tbody id="availableTableBody">
+                        @foreach(var item in Model.AvailableShipments) {
+                            <tr><td>@item.WaybillNumber</td><td>@item.DateCreated.ToShortDateString()</td><td>@item.Destination</td><td><button class="btn btn-success btn-sm add-btn" data-waybill="@item.WaybillNumber">Add</button></td></tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h6>Shipments on this Manifest</h6>
+                    <table class="table table-sm">
+                        <thead><tr><th>Waybill #</th><th>Destination</th><th>Action</th></tr></thead>
+                        <tbody id="manifestedTableBody">
+                        @foreach(var item in Model.ManifestedShipments) {
+                            <tr><td>@item.WaybillNumber</td><td>@item.Destination</td><td><button class="btn btn-danger btn-sm remove-btn" data-waybill="@item.WaybillNumber">Remove</button></td></tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function() {
+            function handleManifestAction(button, url, targetTable, newButtonClass, newButtonText) {
+                var row = button.closest('tr');
+                var waybill = button.data('waybill');
+                var manifestId = $('#manifestDbId').val();
+
+                $.post(url, { __RequestVerificationToken: $('input[name=__RequestVerificationToken]').val(), manifestDbId: manifestId, waybillNumber: waybill }, function(response) {
+                    if (response.success) {
+                        row.detach().appendTo(targetTable);
+                        button.removeClass().addClass(newButtonClass).text(newButtonText);
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                });
+            }
+
+            $('#availableTableBody').on('click', '.add-btn', function() {
+                handleManifestAction($(this), '@Url.Action("AddToManifest")', '#manifestedTableBody', 'btn btn-danger btn-sm remove-btn', 'Remove');
+            });
+
+            $('#manifestedTableBody').on('click', '.remove-btn', function() {
+                handleManifestAction($(this), '@Url.Action("RemoveFromManifest")', '#availableTableBody', 'btn btn-success btn-sm add-btn', 'Add');
+            });
+        });
+    </script>
+}

@@ -1,0 +1,241 @@
+@* @model SMS.Models.ViewModels.TerminalShipmentsVM *@
+@* @{ *@
+@*     ViewData["Title"] = "Terminal Shipments"; *@
+@*     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml"; *@
+@* } *@
+@* *@
+@* <section class="content-header"> *@
+@*     <div class="container-fluid"> *@
+@*         <div class="row mb-2"> *@
+@*             <div class="col-sm-6"><h1>Terminal Shipments</h1></div> *@
+@*         </div> *@
+@*     </div> *@
+@* </section> *@
+@* *@
+@* <section class="content"> *@
+@*     <div class="container-fluid"> *@
+@*         <!-- Date Filter Form --> *@
+@*         <div class="card card-default"> *@
+@*             <div class="card-header"><h3 class="card-title">Filter Shipments by Date</h3></div> *@
+@*             <div class="card-body"> *@
+@*                 <form asp-action="Shipments" method="get"> *@
+@*                     <div class="row align-items-end"> *@
+@*                         <div class="form-group col-md-4"><label asp-for="StartDate"></label><input asp-for="StartDate" class="form-control" /></div> *@
+@*                         <div class="form-group col-md-4"><label asp-for="EndDate"></label><input asp-for="EndDate" class="form-control" /></div> *@
+@*                         <div class="form-group col-md-2"><button type="submit" class="btn btn-primary btn-block">Filter</button></div> *@
+@*                         <div class="form-group col-md-2"><a asp-action="Shipments" class="btn btn-secondary btn-block">Today's Shipments</a></div> *@
+@*                     </div> *@
+@*                 </form> *@
+@*             </div> *@
+@*         </div> *@
+@* *@
+@*         <div class="row"> *@
+@*             <!-- Incoming Shipments Column --> *@
+@*             <div class="col-lg-12 mb-4"> *@
+@*                 <div class="card"> *@
+@*                     <div class="card-header bg-success"> *@
+@*                         <h3 class="card-title">Incoming Shipments (To My Location)</h3> *@
+@*                     </div> *@
+@*                     <div class="card-body"> *@
+@*                         <table class="table table-bordered table-striped" id="incomingTable"> *@
+@*                             <thead> *@
+@*                             <tr> *@
+@*                                 <th>Waybill</th> *@
+@*                                 <th>Date Created</th> *@
+@*                                 <th>Departure</th> *@
+@*                                 <th>Sender</th> *@
+@*                                 <th>Status</th> *@
+@*                             </tr> *@
+@*                             </thead> *@
+@*                             <tbody> *@
+@*                             @foreach (var item in Model.IncomingShipments) *@
+@*                             { *@
+@*                                 <tr> *@
+@*                                     <td>@item.WaybillNumber</td> *@
+@*                                     <td>@item.DateCreated.ToString("yyyy-MM-dd HH:mm")</td> *@
+@*                                     <td>@item.DepartureLocation</td> *@
+@*                                     <td>@item.SenderName</td> *@
+@*                                     <td><span class="badge badge-info">@item.Status</span></td> *@
+@*                                 </tr> *@
+@*                             } *@
+@*                             </tbody> *@
+@*                         </table> *@
+@*                     </div> *@
+@*                 </div> *@
+@*             </div> *@
+@* *@
+@*             <!-- Outgoing Shipments Column --> *@
+@*             <div class="col-lg-12"> *@
+@*                 <div class="card"> *@
+@*                     <div class="card-header bg-warning"> *@
+@*                         <h3 class="card-title">Outgoing Shipments (From My Location)</h3> *@
+@*                     </div> *@
+@*                     <div class="card-body"> *@
+@*                         <table class="table table-bordered table-striped" id="outgoingTable"> *@
+@*                             <thead> *@
+@*                             <tr> *@
+@*                                 <th>Waybill</th> *@
+@*                                 <th>Date Created</th> *@
+@*                                 <th>Destination</th> *@
+@*                                 <th>Receiver</th> *@
+@*                                 <th>Status</th> *@
+@*                             </tr> *@
+@*                             </thead> *@
+@*                             <tbody> *@
+@*                             @foreach (var item in Model.OutgoingShipments) *@
+@*                             { *@
+@*                                 <tr> *@
+@*                                     <td>@item.WaybillNumber</td> *@
+@*                                     <td>@item.DateCreated.ToString("yyyy-MM-dd HH:mm")</td> *@
+@*                                     <td>@item.DestinationLocation</td> *@
+@*                                     <td>@item.ReceiverName</td> *@
+@*                                     <td><span class="badge badge-info">@item.Status</span></td> *@
+@*                                 </tr> *@
+@*                             } *@
+@*                             </tbody> *@
+@*                         </table> *@
+@*                     </div> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* </section> *@
+@* *@
+@* @section Scripts { *@
+@*     <script> *@
+@*         $(document).ready(function() { *@
+@*             $('#incomingTable').DataTable({ "order": [[ 1, "desc" ]] }); *@
+@*             $('#outgoingTable').DataTable({ "order": [[ 1, "desc" ]] }); *@
+@*         }); *@
+@*     </script> *@
+@* } *@
+
+
+
+
+
+
+
+
+
+@model SMS.Models.ViewModels.TerminalShipmentsVM
+@{
+    ViewData["Title"] = "Terminal Shipments";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6"><h1>Terminal Shipments</h1></div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <!-- Date Filter Form -->
+        <div class="card card-default">
+            <div class="card-header"><h3 class="card-title">Filter Shipments by Date</h3></div>
+            <div class="card-body">
+                <form asp-action="Shipments" method="get">
+                    <div class="row align-items-end">
+                        <div class="form-group col-md-4"><label asp-for="StartDate"></label><input asp-for="StartDate" class="form-control" /></div>
+                        <div class="form-group col-md-4"><label asp-for="EndDate"></label><input asp-for="EndDate" class="form-control" /></div>
+                        <div class="form-group col-md-2"><button type="submit" class="btn btn-primary btn-block">Filter</button></div>
+                        <div class="form-group col-md-2"><a asp-action="Shipments" class="btn btn-secondary btn-block">Today's Shipments</a></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Incoming Shipments Column -->
+            <div class="col-lg-12 mb-4">
+                <div class="card">
+                    <div class="card-header bg-success">
+                        <h3 class="card-title">Incoming Shipments (To My Location)</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped" id="incomingTable">
+                            <thead>
+                            <tr>
+                                <th>Waybill</th>
+                                <th>Date Created</th>
+                                <th>Departure</th>
+                                <th>Sender</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var item in Model.IncomingShipments)
+                            {
+                                <tr>
+                                    <td>@item.WaybillNumber</td>
+                                    <td>@item.DateCreated.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@item.DepartureLocation</td>
+                                    <td>@item.SenderName</td>
+                                    <td><span class="badge badge-info">@item.Status</span></td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outgoing Shipments Column -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header bg-warning">
+                        <h3 class="card-title">Outgoing Shipments (From My Location)</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped" id="outgoingTable">
+                            <thead>
+                            <tr>
+                                <th>Waybill</th>
+                                <th>Date Created</th>
+                                <th>Destination</th>
+                                <th>Receiver</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var item in Model.OutgoingShipments)
+                            {
+                                <tr>
+                                    <td>@item.WaybillNumber</td>
+                                    <td>@item.DateCreated.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@item.DestinationLocation</td>
+                                    <td>@item.ReceiverName</td>
+                                    <td><span class="badge badge-info">@item.Status</span></td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTables with the correct DOM for buttons
+            $('#incomingTable').DataTable({
+                "order": [[ 1, "desc" ]],
+                dom: 'Bfrtip',
+                buttons: [ 'copy', 'csv', 'excel', 'pdf', 'print' ]
+            });
+
+            $('#outgoingTable').DataTable({
+                "order": [[ 1, "desc" ]],
+                dom: 'Bfrtip',
+                buttons: [ 'copy', 'csv', 'excel', 'pdf', 'print' ]
+            });
+        });
+    </script>
+}      

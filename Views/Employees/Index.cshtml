@@ -1,0 +1,169 @@
+
+@model SMS.Models.ViewModels.EmployeeVM
+
+@{
+    ViewData["Title"] = "System Users";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+<div class="card card-primary card-tabs">
+    <div class="card-header p-0 pt-1">
+        <ul class="nav nav-tabs" id="employee-tabs" role="tablist">
+            <li class="nav-item"><a class="nav-link active" id="list-tab" data-toggle="pill" href="#list-pane" role="tab"><i class="fas fa-list"></i> Employee List</a></li>
+            <li class="nav-item"><a class="nav-link" id="form-tab" data-toggle="pill" href="#form-pane" role="tab"><i class="fas fa-user-plus"></i> Assign Employee</a></li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content">
+            <!-- Employee List Pane -->
+            <div class="tab-pane fade show active" id="list-pane" role="tabpanel">
+                <table id="employeesTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Location</th>
+                            <th>Assigned Roles</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.EmployeeList)
+                    {
+                        <tr>
+                            <td>@item.FullName</td>
+                            <td>@item.Email</td>
+                            <td>@item.LocationName</td>
+                            <td>
+                                @foreach(var role in item.Roles) {
+                                    <span class="badge badge-info m-1 p-1">@role</span>
+                                }
+                            </td>
+                            <td>
+                                <!-- NEW: Display Status Badge -->
+                                @if (item.IsLocked)
+                                {
+                                    <span class="badge badge-danger">Locked</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-success">Active</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <!-- NEW: Lock/Unlock Button Form -->
+                                    <form asp-action="ToggleLockout" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        @if (item.IsLocked)
+                                        {
+                                            <button type="submit" class="btn btn-sm btn-success" title="Unlock User"><i class="fas fa-unlock"></i></button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn-sm btn-danger" title="Lock User"><i class="fas fa-lock"></i></button>
+                                        }
+                                    </form>
+
+                                    <!-- Existing Edit/Delete Buttons -->
+                                    <button class="btn btn-sm btn-outline-primary edit-btn" data-id="@item.Id" title="Edit"><i class="fas fa-pencil-alt"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger delete-btn" data-id="@item.Id" data-name="@item.FullName" title="Delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Assign Employee Form Pane (No changes here) -->
+            <div class="tab-pane fade" id="form-pane" role="tabpanel">
+                <form asp-action="AssignEmployee" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Assignment.Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6"><label asp-for="Assignment.FirstName"></label><input asp-for="Assignment.FirstName" class="form-control" /></div>
+                        <div class="form-group col-md-6"><label asp-for="Assignment.LastName"></label><input asp-for="Assignment.LastName" class="form-control" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label><br />
+                        <div class="form-check form-check-inline"><input class="form-check-input" type="radio" asp-for="Assignment.Gender" value="Male" /><label class="form-check-label">Male</label></div>
+                        <div class="form-check form-check-inline"><input class="form-check-input" type="radio" asp-for="Assignment.Gender" value="Female" /><label class="form-check-label">Female</label></div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6"><label asp-for="Assignment.PhoneNumber"></label><input asp-for="Assignment.PhoneNumber" class="form-control" /></div>
+                        <div class="form-group col-md-6"><label asp-for="Assignment.Email"></label><input asp-for="Assignment.Email" type="email" class="form-control" /></div>
+                    </div>
+                    <div class="form-group"><label asp-for="Assignment.LocationId"></label><select asp-for="Assignment.LocationId" asp-items="Model.LocationList" class="form-control"><option value="">-- Select Location --</option></select></div>
+                    <div class="form-group"><label asp-for="Assignment.SelectedRoles"></label><select asp-for="Assignment.SelectedRoles" asp-items="Model.RoleList" id="rolesDropdown" class="form-control" multiple></select></div>
+                    
+                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save Employee</button>
+                    <button type="button" class="btn btn-secondary" id="clearFormBtn">Clear Form</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal (No changes here) -->
+<div class="modal fade" id="deleteModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title">Confirm Deletion</h5><button type="button" class="close" data-dismiss="modal">×</button></div>
+    <div class="modal-body"><p>Are you sure you want to delete user: <strong id="deleteName"></strong>? This will remove their login permanently.</p></div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <form asp-action="Delete" method="post" class="d-inline"><input type="hidden" id="deleteId" name="id" /><button type="submit" class="btn btn-danger">Delete</button></form>
+    </div>
+</div></div></div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <!-- Script section remains the same -->
+    <script>
+        $(function () {
+            // Initialize plugins
+            $('#employeesTable').DataTable();
+            $('#rolesDropdown').select2({ placeholder: "Select one or more roles", width: '100%' });
+
+            // Clear form button logic
+            $('#clearFormBtn').on('click', function() {
+                window.location.href = '@Url.Action("Index", "Employees")';
+            });
+
+            // Handle Edit Button Click
+            $('.edit-btn').on('click', function () {
+                var id = $(this).data('id');
+                $('#form-tab').tab('show');
+                $.getJSON('/Employees/GetEmployeeForEdit/' + id, function (data) {
+                    if (!data) { alert('Could not find employee data.'); return; }
+                    
+                    $('#Assignment_Id').val(data.id);
+                    $('#Assignment_FirstName').val(data.firstName);
+                    $('#Assignment_LastName').val(data.lastName);
+                    $('input[name="Assignment.Gender"][value="' + data.gender + '"]').prop('checked', true);
+                    $('#Assignment_Email').val(data.email);
+                    $('#Assignment_PhoneNumber').val(data.phoneNumber);
+                    $('#Assignment_LocationId').val(data.locationId);
+                    
+                    $('#rolesDropdown').val(data.selectedRoles).trigger('change');
+                });
+            });
+
+            // Handle Delete Button Click
+            $('.delete-btn').on('click', function () {
+                $('#deleteId').val($(this).data('id'));
+                $('#deleteName').text($(this).data('name'));
+                $('#deleteModal').modal('show');
+            });
+
+            // If a create/edit failed, switch back to the form tab
+            if ('@TempData["error"]' != '') {
+                 $('#form-tab').tab('show');
+            }
+        });
+    </script>
+}

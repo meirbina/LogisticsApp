@@ -1,0 +1,106 @@
+@using Newtonsoft.Json
+@model SMS.Models.ViewModels.SalesReportVM
+@{ ViewData["Title"] = "Sales Report"; Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml"; }
+
+<section class="content-header">
+    <div class="container-fluid"><div class="row mb-2">
+            <div class="col-sm-6"><h1>Sales Report</h1><p class="text-muted">Libmot Express Sales Report</p></div>
+            <div class="col-sm-6"><ol class="breadcrumb float-sm-right"><li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Home</a></li><li class="breadcrumb-item active">Sales Report</li></ol></div>
+        </div></div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-default">
+            <div class="card-header"><h3 class="card-title">Get sales report</h3></div>
+            <div class="card-body">
+                <form asp-action="SalesReport" method="get">
+                    <div class="row align-items-end">
+                        <div class="form-group col-md-4"><label asp-for="StartDate"></label><input asp-for="StartDate" class="form-control" /></div>
+                        <div class="form-group col-md-4"><label asp-for="EndDate"></label><input asp-for="EndDate" class="form-control" /></div>
+                        <div class="form-group col-md-2"><button type="submit" class="btn btn-primary btn-block">Search</button></div>
+                        <div class="form-group col-md-2"><a asp-action="SalesReport" class="btn btn-secondary btn-block">Today's Report</a></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <table class="table table-striped">
+                            <thead><tr><th>Location Name</th><th>Date</th><th>Total Sales</th><th>Total VAT</th><th>Total packaging fee</th><th style="width: 120px;"></th></tr></thead>
+                            <tbody>
+                            @foreach (var sale in Model.DailySales)
+                            {
+                                <tr>
+                                    <td>@sale.LocationName</td>
+                                    <td>@sale.Date.ToString("ddd, dd MMMM yyyy")</td>
+                                    <td>@sale.TotalSales.ToString("N2")</td>
+                                    <td>@sale.TotalVat.ToString("N2")</td>
+                                    <td>@sale.TotalPackagingFee.ToString("N2")</td>
+                                    <td><button class="btn btn-sm btn-info view-details-btn" data-details='@Html.Raw(JsonConvert.SerializeObject(sale))'><i class="fas fa-eye"></i> View Details</button></td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="text-center">Total Sales</h5>
+                        <h2 class="text-center font-weight-bold text-success">@Model.Summary.GrandTotalSales.ToString("C", new System.Globalization.CultureInfo("en-NG"))</h2>
+                        <p class="text-center text-muted">@Model.StartDate.ToString("ddd, dd MMM yyyy") to @Model.EndDate.ToString("ddd, dd MMM yyyy")</p>
+                        <hr/>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between"><span>Total POS:</span> <strong>@Model.Summary.TotalPos.ToString("N2")</strong></li>
+                            <li class="list-group-item d-flex justify-content-between"><span>Total Cash:</span> <strong>@Model.Summary.TotalCash.ToString("N2")</strong></li>
+                            <li class="list-group-item d-flex justify-content-between"><span>Total Transfer:</span> <strong>@Model.Summary.TotalTransfer.ToString("N2")</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="detailsModal" tabindex="-1"><div class="modal-dialog modal-xl"><div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title" id="detailsModalTitle"></h5><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+            <div class="modal-body" id="detailsModalBody"></div>
+            <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div>
+        </div></div></div>
+
+@section Scripts {
+    <script>
+        $(function() {
+            $('.view-details-btn').on('click', function() {
+                var details = $(this).data('details');
+                $('#detailsModalTitle').text('Sales Details for ' + details.LocationName + ' on ' + new Date(details.Date).toLocaleDateString());
+                var modalBody = $('#detailsModalBody');
+                modalBody.empty();
+                if (details.UserSales && details.UserSales.length > 0) {
+                    $.each(details.UserSales, function(i, userSale) {
+                        var userHeader = `<h5>User: ${userSale.UserEmail} - Total: ${userSale.TotalSalesByUser.toFixed(2)}</h5>`;
+                        var table = $('<table class="table table-bordered table-sm mt-2"></table>');
+                        var thead = `<thead><tr><th>Waybill</th><th>Weight (kg)</th><th>Sender #</th><th>Receiver #</th><th>Description</th><th>Payment</th><th>Cost</th></tr></thead>`;
+                        table.append(thead);
+                        var tbody = $('<tbody></tbody>');
+                        $.each(userSale.Shipments, function(j, shipment) {
+                            var row = `<tr>
+                                    <td>${shipment.WaybillNumber}</td><td>${shipment.TotalWeight.toFixed(2)}</td>
+                                    <td>${shipment.SenderPhoneNumber}</td><td>${shipment.ReceiverPhoneNumber}</td>
+                                    <td>${shipment.ItemDescription}</td><td>${shipment.PaymentMethod}</td>
+                                    <td>${shipment.TotalCost.toFixed(2)}</td></tr>`;
+                            tbody.append(row);
+                        });
+                        table.append(tbody);
+                        modalBody.append(userHeader).append(table).append('<hr/>');
+                    });
+                } else { modalBody.html('<p>No detailed shipment data found for this entry.</p>'); }
+                $('#detailsModal').modal('show');
+            });
+        });
+    </script>
+}

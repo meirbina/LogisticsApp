@@ -1,0 +1,77 @@
+@model SMS.Models.Shipment
+@{ Layout = null; }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-g" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waybill - @Model.WaybillNumber</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body { background-color: #f8f9fa; }
+        .waybill-container { border: 2px solid #000; padding: 20px; max-width: 800px; margin: 2rem auto; background-color: #fff; }
+        .print-button-container { text-align: center; margin-top: 20px; }
+        .barcode { font-family: 'Libre Barcode 39', cursive; font-size: 3.5rem; text-align: center; margin-bottom: 0; padding-bottom: 0; }
+        .waybill-number { text-align: center; font-weight: bold; margin-top: -10px; }
+        
+        @@media print {
+            body { background-color: #fff; }
+            .print-button-container { display: none; }
+            .waybill-container { margin: 0; border: none; box-shadow: none; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="waybill-container">
+        <h2 class="text-center font-weight-bold">WAYBILL</h2>
+        <p class="barcode">@Model.WaybillNumber</p>
+        <p class="waybill-number">@Model.WaybillNumber</p>
+        <hr/>
+        <div class="row">
+            <div class="col-6"><strong>FROM (Sender):</strong><p class="mb-0">@Model.SenderName<br>@Model.SenderPhoneNumber<br>@Model.SenderAddress</p></div>
+            <div class="col-6"><strong>TO (Receiver):</strong><p class="mb-0">@Model.ReceiverName<br>@Model.ReceiverPhoneNumber<br>@Model.ReceiverAddress</p></div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-6"><strong>ORIGIN TERMINAL:</strong><p class="mb-0">@Model.CreatedBy (User)</p></div>
+            <div class="col-6"><strong>DESTINATION TERMINAL:</strong><p class="mb-0">@Model.DestinationLocation.Name, @Model.DestinationLocation.State.Name</p></div>
+        </div>
+        <hr/>
+        <h6>Shipment Items</h6>
+        <table class="table table-sm table-bordered">
+            <thead><tr><th>Item Description</th><th>Weight (kg)</th><th>Condition</th></tr></thead>
+            <tbody>
+                @foreach(var item in Model.Items) { 
+                    <tr><td>@item.Description</td><td>@item.Weight</td><td>@item.Condition</td></tr> 
+                }
+            </tbody>
+        </table>
+        <hr/>
+        <div class="row">
+            <div class="col-7">
+                <p class="mb-0"><strong>Payment Method:</strong> @Model.PaymentMethod</p>
+                <p class="mb-0"><strong>Date Created:</strong> @Model.DateCreated.ToString("yyyy-MM-dd HH:mm")</p>
+                <p class="mb-0"><strong>Service Type:</strong> Normal Shipment</p>
+            </div>
+            <div class="col-5">
+                <dl class="row mb-0"><dt class="col-8">Shipment Cost:</dt><dd class="col-4 text-right">@Model.ShipmentCost.ToString("N2")</dd></dl>
+                <dl class="row mb-0"><dt class="col-8">Packaging:</dt><dd class="col-4 text-right">@Model.PackagingCost.ToString("N2")</dd></dl>
+                <dl class="row mb-0"><dt class="col-8">Insurance:</dt><dd class="col-4 text-right">@Model.InsuranceCost.ToString("N2")</dd></dl>
+                <dl class="row mb-0"><dt class="col-8">VAT:</dt><dd class="col-4 text-right">@Model.Vat.ToString("N2")</dd></dl>
+                <dl class="row mb-0 border-top"><dt class="col-8 font-weight-bold">Total Cost:</dt><dd class="col-4 font-weight-bold text-right">@Model.TotalCost.ToString("N2")</dd></dl>
+            </div>
+        </div>
+    </div>
+    <div class="print-button-container">
+        <button onclick="window.print()" class="btn btn-primary"><i class="fas fa-print"></i> Print Waybill</button>
+        <a asp-action="AllShipments" asp-controller="Shipment" class="btn btn-secondary">Back to All Shipments</a>
+    </div>
+
+    <!-- Script to automatically trigger print dialog -->
+    <script>
+        window.onload = function() {
+            window.print();
+        };
+    </script>
+</body>
+</html>

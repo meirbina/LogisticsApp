@@ -1,0 +1,329 @@
+@* @model SMS.Models.ViewModels.ManifestListVM *@
+@* *@
+@* @{ *@
+@*     ViewData["Title"] = "All Manifests"; *@
+@*     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml"; *@
+@* } *@
+@* *@
+@* <div class="card shadow mb-4"> *@
+@*     <div class="card-header"> *@
+@*         <h6 class="m-0 font-weight-bold text-primary">Manifest List</h6> *@
+@*     </div> *@
+@* *@
+@*     <!-- Date Filter Form --> *@
+@*     <div class="card-body border-bottom"> *@
+@*         <form asp-action="ManifestList" method="get"> *@
+@*             <div class="row align-items-end"> *@
+@*                 <div class="form-group col-md-4"> *@
+@*                     <label asp-for="StartDate"></label> *@
+@*                     <input asp-for="StartDate" class="form-control" /> *@
+@*                 </div> *@
+@*                 <div class="form-group col-md-4"> *@
+@*                     <label asp-for="EndDate"></label> *@
+@*                     <input asp-for="EndDate" class="form-control" /> *@
+@*                 </div> *@
+@*                 <div class="form-group col-md-4"> *@
+@*                     <button type="submit" class="btn btn-primary">Filter</button> *@
+@*                     <a asp-action="ManifestList" class="btn btn-secondary">Today</a> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </form> *@
+@*     </div> *@
+@* *@
+@*     <div class="card-body"> *@
+@*         <table class="table table-bordered" id="manifestTable"> *@
+@*             <thead> *@
+@*             <tr> *@
+@*                 <th>Manifest ID</th> *@
+@*                 <th>Date Created</th> *@
+@*                 <th>Departure</th> *@
+@*                 <th>Destination</th> *@
+@*                 <th>Status</th> *@
+@*                 <th>Actions</th> *@
+@*             </tr> *@
+@*             </thead> *@
+@*             <tbody> *@
+@*             @foreach (var item in Model.Manifests) *@
+@*             { *@
+@*                 <tr> *@
+@*                     <td>@item.ManifestId</td> *@
+@*                     <td>@item.DateCreated.ToString("yyyy-MM-dd HH:mm")</td> *@
+@*                     <td>@item.DepartureLocation.State.Name ==> @item.DepartureLocation.Name</td> *@
+@*                     <td>@item.DestinationLocation.State.Name ==> @item.DestinationLocation.Name</td> *@
+@*                     <td> *@
+@*                         @if(item.IsSignedOff) *@
+@*                         { *@
+@*                             <span class="badge badge-success">Dispatched</span> *@
+@*                         } *@
+@*                         else *@
+@*                         { *@
+@*                             <span class="badge badge-warning">Pending</span> *@
+@*                         } *@
+@*                     </td> *@
+@*                     <td> *@
+@*                         @if(!item.IsSignedOff) *@
+@*                         { *@
+@*                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a> *@
+@*                             <button class="btn btn-sm btn-success signoff-btn" *@
+@*                                     data-id="@item.Id" *@
+@*                                     data-manifest="@item.ManifestId" *@
+@*                                     data-departure-id="@item.DepartureLocationId" *@
+@*                                     data-destination-id="@item.DestinationLocationId" *@
+@*                                     data-toggle="modal" data-target="#signOffModal">Sign Off</button> *@
+@*                         } *@
+@*                         else *@
+@*                         { *@
+@*                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a> *@
+@*                         } *@
+@*                     </td> *@
+@*                 </tr> *@
+@*             } *@
+@*             </tbody> *@
+@*         </table> *@
+@*     </div> *@
+@* </div> *@
+@* *@
+@* <!-- Sign Off Modal --> *@
+@* <div class="modal fade" id="signOffModal" tabindex="-1"> *@
+@*     <div class="modal-dialog"> *@
+@*         <div class="modal-content"> *@
+@*             <form asp-action="SignOff" method="post"> *@
+@*                 @Html.AntiForgeryToken() *@
+@*                 <div class="modal-header"> *@
+@*                     <h5 class="modal-title">Signoff Manifest <span id="manifestIdLabel" class="font-weight-bold"></span></h5> *@
+@*                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"> *@
+@*                         <span aria-hidden="true">&times;</span> *@
+@*                     </button> *@
+@*                 </div> *@
+@*                 <div class="modal-body"> *@
+@*                     <input type="hidden" id="manifestDbIdInput" name="manifestDbId" /> *@
+@*                     <div class="form-group"> *@
+@*                         <label>Enter Dispatch Fee</label> *@
+@*                         <input name="dispatchFee" type="number" step="0.01" class="form-control" required/> *@
+@*                     </div> *@
+@*                     <div class="form-group"> *@
+@*                         <label>Select Driver</label> *@
+@*                         <select name="driverId" asp-items="@ViewBag.Drivers" class="form-control" required><option value="">-- Select Driver --</option></select> *@
+@*                     </div> *@
+@*                     <div class="form-group"> *@
+@*                         <label>Select Vehicle</label> *@
+@*                         <select name="vehicleId" asp-items="@ViewBag.Vehicles" class="form-control" required><option value="">-- Select Vehicle --</option></select> *@
+@*                     </div> *@
+@*                     <div class="form-group"> *@
+@*                         <label>Select Departure</label> *@
+@*                         <select id="modalDeparture" name="departureLocationId" asp-items="@ViewBag.Locations" class="form-control" required></select> *@
+@*                     </div> *@
+@*                     <div class="form-group"> *@
+@*                         <label>Select Destination</label> *@
+@*                         <select id="modalDestination" class="form-control" disabled></select> *@
+@*                     </div> *@
+@*                 </div> *@
+@*                 <div class="modal-footer"> *@
+@*                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> *@
+@*                     <button type="submit" class="btn btn-primary">Submit</button> *@
+@*                 </div> *@
+@*             </form> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+@* *@
+@* @section Scripts { *@
+@*     <script> *@
+@*         $(function() { *@
+@*             $('#manifestTable').DataTable({"order": [[ 1, "desc" ]]}); *@
+@* *@
+@*             $('.signoff-btn').on('click', function() { *@
+@*                 var button = $(this); *@
+@*                 var manifestId = button.data('manifest'); *@
+@*                 var manifestDbId = button.data('id'); *@
+@*                 var departureId = button.data('departure-id'); *@
+@*                 var destinationId = button.data('destination-id'); *@
+@* *@
+@*                 // Set the values in the modal's main inputs *@
+@*                 $('#manifestIdLabel').text(manifestId); *@
+@*                 $('#manifestDbIdInput').val(manifestDbId); *@
+@*                 $('#modalDeparture').val(departureId); *@
+@* *@
+@*                 // For the disabled destination dropdown, we find its text from the table row *@
+@*                 // and create a single, selected option inside it. *@
+@*                 var destinationText = button.closest('tr').find('td:eq(3)').text(); *@
+@*                 $('#modalDestination').html(`<option value="${destinationId}">${destinationText}</option>`); *@
+@*             }); *@
+@*         }); *@
+@*     </script> *@
+@* } *@
+
+
+
+
+
+
+
+
+
+
+
+@model SMS.Models.ViewModels.ManifestListVM
+
+@{
+    ViewData["Title"] = "All Manifests";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold text-primary">Manifest List</h6>
+    </div>
+    
+    <!-- Date Filter Form -->
+    <div class="card-body border-bottom">
+        <form asp-action="ManifestList" method="get">
+            <div class="row align-items-end">
+                <div class="form-group col-md-4">
+                    <label asp-for="StartDate"></label>
+                    <input asp-for="StartDate" class="form-control" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="EndDate"></label>
+                    <input asp-for="EndDate" class="form-control" />
+                </div>
+                <div class="form-group col-md-2">
+                    <button type="submit" class="btn btn-primary btn-block">Filter</button>
+                </div>
+                <div class="form-group col-md-2">
+                    <a asp-action="ManifestList" class="btn btn-secondary btn-block">Today</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="card-body">
+        <table class="table table-bordered" id="manifestTable">
+            <thead>
+                <tr>
+                    <th>Manifest ID</th>
+                    <th>Date Created</th>
+                    <th>Departure</th>
+                    <th>Destination</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Manifests)
+                {
+                    <tr>
+                        <td>@item.ManifestId</td>
+                        <td>@item.DateCreated.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@item.DepartureLocation.State.Name ==> @item.DepartureLocation.Name</td>
+                        <td>@item.DestinationLocation.State.Name ==> @item.DestinationLocation.Name</td>
+                        <td>
+                            @if(item.IsSignedOff) 
+                            { 
+                                <span class="badge badge-success">Dispatched</span> 
+                            }
+                            else 
+                            { 
+                                <span class="badge badge-warning">Pending</span> 
+                            }
+                        </td>
+                        <td>
+                            @if(!item.IsSignedOff)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                                <button class="btn btn-sm btn-success signoff-btn" 
+                                        data-id="@item.Id" 
+                                        data-manifest="@item.ManifestId" 
+                                        data-departure-id="@item.DepartureLocationId"
+                                        data-destination-id="@item.DestinationLocationId"
+                                        data-toggle="modal" data-target="#signOffModal">Sign Off</button>
+                            }
+                            else
+                            {
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Sign Off Modal -->
+<div class="modal fade" id="signOffModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="SignOff" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title">Signoff Manifest <span id="manifestIdLabel" class="font-weight-bold"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="manifestDbIdInput" name="manifestDbId" />
+                    <div class="form-group">
+                        <label>Enter Dispatch Fee</label>
+                        <input name="dispatchFee" type="number" step="0.01" class="form-control" required/>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Driver</label>
+                        <select name="driverId" asp-items="@ViewBag.Drivers" class="form-control" required><option value="">-- Select Driver --</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Vehicle</label>
+                        <select name="vehicleId" asp-items="@ViewBag.Vehicles" class="form-control" required><option value="">-- Select Vehicle --</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Departure</label>
+                        <select id="modalDeparture" name="departureLocationId" asp-items="@ViewBag.Locations" class="form-control" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Destination</label>
+                        <select id="modalDestination" class="form-control" disabled></select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function() {
+            // Initialize DataTable with the correct DOM for buttons
+            $('#manifestTable').DataTable({
+                "order": [[ 1, "desc" ]],
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+
+            // Signoff button click handler
+            $('.signoff-btn').on('click', function() {
+                var button = $(this);
+                var manifestId = button.data('manifest');
+                var manifestDbId = button.data('id');
+                var departureId = button.data('departure-id');
+                var destinationId = button.data('destination-id');
+                
+                // Set the values in the modal's main inputs
+                $('#manifestIdLabel').text(manifestId);
+                $('#manifestDbIdInput').val(manifestDbId);
+                $('#modalDeparture').val(departureId);
+
+                // For the disabled destination dropdown, we find its text from the table row
+                // and create a single, selected option inside it.
+                var destinationText = button.closest('tr').find('td:eq(3)').text();
+                $('#modalDestination').html(`<option value="${destinationId}">${destinationText}</option>`);
+            });
+        });
+    </script>
+}

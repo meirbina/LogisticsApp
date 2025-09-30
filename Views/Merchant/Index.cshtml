@@ -1,0 +1,139 @@
+@model SMS.Models.ViewModels.MerchantVM
+
+@{
+    ViewData["Title"] = "Merchant Management";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Merchants</h6>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addModal">
+            <i class="fas fa-plus"></i> Add Merchant
+        </button>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered" id="merchantTable">
+            <thead><tr><th>Business Name</th><th>Owner</th><th>Email</th><th>Phone</th><th>Actions</th></tr></thead>
+            <tbody>
+                @foreach (var item in Model.MerchantList) {
+                    <tr>
+                        <td>@item.BusinessName</td>
+                        <td>@item.OwnerFirstName @item.OwnerLastName</td>
+                        <td>@item.BusinessEmail</td>
+                        <td>@item.BusinessPhoneNumber</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning edit-btn" data-id="@item.Id" data-toggle="modal" data-target="#editModal">Edit</button>
+                            <button class="btn btn-sm btn-danger delete-btn" data-id="@item.Id" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1"><div class="modal-dialog modal-lg"><div class="modal-content">
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <div class="modal-header"><h5 class="modal-title">Add New Merchant</h5><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+    <div class="modal-body">
+        <h5>Business Details</h5>
+        <div class="row">
+            <div class="form-group col-md-12"><label asp-for="Form.BusinessName"></label><input asp-for="Form.BusinessName" class="form-control" required/></div>
+            <div class="form-group col-md-6"><label asp-for="Form.OwnerFirstName"></label><input asp-for="Form.OwnerFirstName" class="form-control" required/></div>
+            <div class="form-group col-md-6"><label asp-for="Form.OwnerLastName"></label><input asp-for="Form.OwnerLastName" class="form-control" required/></div>
+            <div class="form-group col-md-6"><label asp-for="Form.BusinessEmail"></label><input asp-for="Form.BusinessEmail" type="email" class="form-control" required/></div>
+            <div class="form-group col-md-6"><label asp-for="Form.BusinessPhoneNumber"></label><input asp-for="Form.BusinessPhoneNumber" class="form-control" required/></div>
+            <div class="form-group col-12"><label asp-for="Form.BusinessAddress"></label><textarea asp-for="Form.BusinessAddress" class="form-control" rows="2" required></textarea></div>
+        </div><hr/>
+        <h5>Weight Pricing Setup</h5>
+        <div id="addWeightPriceContainer"></div>
+        <button type="button" class="btn btn-sm btn-info mt-2 add-weight-btn" data-container="#addWeightPriceContainer"><i class="fas fa-plus"></i> Add Weight Range</button>
+    </div>
+    <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button><button type="submit" class="btn btn-primary">Save Merchant</button></div>
+</form>
+</div></div></div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1"><div class="modal-dialog modal-lg"><div class="modal-content">
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+    <div class="modal-header"><h5 class="modal-title">Edit Merchant</h5><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+    <div class="modal-body">
+        <input type="hidden" id="editId" name="Form.Id" />
+        <h5>Business Details</h5>
+        <div class="row">
+            <div class="form-group col-md-12"><label>Business Name</label><input id="editBusinessName" name="Form.BusinessName" class="form-control" required/></div>
+            <div class="form-group col-md-6"><label>Owner First Name</label><input id="editOwnerFirstName" name="Form.OwnerFirstName" class="form-control" required/></div>
+            <div class="form-group col-md-6"><label>Owner Last Name</label><input id="editOwnerLastName" name="Form.OwnerLastName" class="form-control" required/></div>
+            <div class="form-group col-md-6"><label>Business Email</label><input id="editBusinessEmail" name="Form.BusinessEmail" type="email" class="form-control" required/></div>
+            <div class="form-group col-md-6"><label>Business Phone Number</label><input id="editBusinessPhoneNumber" name="Form.BusinessPhoneNumber" class="form-control" required/></div>
+            <div class="form-group col-12"><label>Business Address</label><textarea id="editBusinessAddress" name="Form.BusinessAddress" class="form-control" rows="2" required></textarea></div>
+        </div><hr/>
+        <h5>Weight Pricing Setup</h5>
+        <div id="editWeightPriceContainer"></div>
+        <button type="button" class="btn btn-sm btn-info mt-2 add-weight-btn" data-container="#editWeightPriceContainer"><i class="fas fa-plus"></i> Add Weight Range</button>
+    </div>
+    <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button><button type="submit" class="btn btn-primary">Update Merchant</button></div>
+</form>
+</div></div></div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">
+<form asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    <div class="modal-header"><h5 class="modal-title">Confirm Deletion</h5></div>
+    <div class="modal-body"><p>Are you sure you want to delete this merchant and all related data (wallet, prices)? This cannot be undone.</p><input type="hidden" id="deleteId" name="id" /></div>
+    <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button><button type="submit" class="btn btn-danger">Delete</button></div>
+</form>
+</div></div></div>
+
+@section Scripts {
+<script>
+    $(function() {
+        $('#merchantTable').DataTable();
+        
+        let priceIndex = 0;
+        function addWeightPriceRow(container, startKg = '', endKg = '', price = '') {
+            var html = `
+            <div class="row weight-price-row mb-2 align-items-center">
+                <div class="col-3"><input name="Form.WeightPrices[${priceIndex}].StartKg" value="${startKg}" placeholder="Start KG" type="number" step="0.01" class="form-control" required/></div>
+                <div class="col-3"><input name="Form.WeightPrices[${priceIndex}].EndKg" value="${endKg}" placeholder="End KG" type="number" step="0.01" class="form-control" required/></div>
+                <div class="col-4"><input name="Form.WeightPrices[${priceIndex}].Price" value="${price}" placeholder="Price" type="number" step="0.01" class="form-control" required/></div>
+                <div class="col-2"><button type="button" class="btn btn-sm btn-danger remove-weight-btn">Remove</button></div>
+            </div>`;
+            container.append(html); priceIndex++;
+        }
+
+        $('.add-weight-btn').on('click', function() { addWeightPriceRow($($(this).data('container'))); });
+        $('#addModal, #editModal').on('click', '.remove-weight-btn', function() { $(this).closest('.weight-price-row').remove(); });
+
+        $('#addModal').on('show.bs.modal', function () {
+            $('#addWeightPriceContainer').empty(); priceIndex = 0; addWeightPriceRow($('#addWeightPriceContainer'));
+        });
+
+        $('.edit-btn').on('click', function() {
+            var id = $(this).data('id');
+            $.getJSON('/Merchant/GetMerchant/' + id, function(data) {
+                $('#editId').val(data.id);
+                $('#editBusinessName').val(data.businessName);
+                $('#editOwnerFirstName').val(data.ownerFirstName);
+                $('#editOwnerLastName').val(data.ownerLastName);
+                $('#editBusinessEmail').val(data.businessEmail);
+                $('#editBusinessPhoneNumber').val(data.businessPhoneNumber);
+                $('#editBusinessAddress').val(data.businessAddress);
+
+                var container = $('#editWeightPriceContainer');
+                container.empty(); priceIndex = 0;
+                if (data.weightPrices && data.weightPrices.length > 0) {
+                    $.each(data.weightPrices, function(i, item) { addWeightPriceRow(container, item.startKg, item.endKg, item.price); });
+                } else { addWeightPriceRow(container); }
+            });
+        });
+        
+        $('.delete-btn').on('click', function() { $('#deleteId').val($(this).data('id')); });
+    });
+</script>
+}

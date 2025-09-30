@@ -1,0 +1,42 @@
+@model IEnumerable<SMS.Models.ShipmentCollection>
+@{
+    ViewData["Title"] = "Collected Shipments History";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header"><h6 class="m-0 font-weight-bold text-primary">Collection History</h6></div>
+    <div class="card-body">
+        <table class="table table-bordered" id="collectedTable">
+            <thead>
+            <tr>
+                <th>Waybill</th>
+                <th>Date Collected</th>
+                <th>Collected By</th>
+                <th>Phone</th>
+                <th>Released By (User)</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.WaybillNumber</td>
+                    <td>@item.CollectionDate.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@item.CollectedByName</td>
+                    <td>@item.CollectedByPhone</td>
+                    <td>@item.ReleasedBy</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function() {
+            $('#collectedTable').DataTable({ "order": [[1, "desc"]] });
+        });
+    </script>
+}

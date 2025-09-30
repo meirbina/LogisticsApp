@@ -1,0 +1,52 @@
+@model SMS.Models.ViewModels.RoleVM
+@{
+    ViewData["Title"] = "Manage Roles";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+    int sl = 1;
+}
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="card card-primary">
+            <div class="card-header"><h3 class="card-title">Create New Role</h3></div>
+            <form asp-action="Create" method="post">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label asp-for="NewRole.Name">Role Name</label>
+                        <input asp-for="NewRole.Name" class="form-control" placeholder="Enter role name"/>
+                        <span asp-validation-for="NewRole.Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success">Save Role</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header"><h3 class="card-title">Existing Roles</h3></div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr><th>Sl</th><th>Role Name</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                    @foreach(var role in Model.Roles)
+                    {
+                        <tr>
+                            <td>@(sl++)</td>
+                            <td>@role.Name</td>
+                            <td>
+                                <form asp-action="Delete" asp-route-id="@role.Id" method="post" onsubmit="return confirm('Delete this role?');">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

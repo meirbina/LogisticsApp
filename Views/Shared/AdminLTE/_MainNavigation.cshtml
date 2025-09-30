@@ -1,0 +1,350 @@
+﻿@* <!-- Main Sidebar Container --> *@
+@* <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #6a5acd;"> *@
+@*     <!-- Brand Logo --> *@
+@*     <a href="#" class="brand-link"> *@
+@*         <img src="~/images/MeirbinaLogo.jpeg" alt="School Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> *@
+@*         <span class="brand-text font-weight-light">Logistics App</span> *@
+@*     </a> *@
+@* *@
+@*     <!-- Sidebar --> *@
+@*     <div class="sidebar"> *@
+@*         <!-- Sidebar Menu --> *@
+@*         <nav class="mt-2"> *@
+@*             <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false"> *@
+@*                  *@
+@*                 <li class="nav-header">MAIN</li> *@
+@*                 <li class="nav-item"> *@
+@*                     <a asp-controller="Dashboard" asp-action="Index" class="nav-link"> *@
+@*                         <i class="nav-icon fas fa-tachometer-alt"></i> *@
+@*                         <p>Dashboard</p> *@
+@*                     </a> *@
+@*                 </li> *@
+@*                *@
+@*                 <li class="nav-item"> *@
+@*                     <a href="#" class="nav-link"> *@
+@*                         <i class="nav-icon fas fa-edit"></i> *@
+@*                         <p>System Setup<i class="right fas fa-angle-left"></i></p> *@
+@*                     </a> *@
+@*                     <ul class="nav nav-treeview"> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="State" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>States</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="ExamTerm" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Exam Term</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                          <li class="nav-item"> *@
+@*                             <a asp-controller="Location" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Locations</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="CustomerType" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Customer Type</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Insurance" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Add Insurance</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="PackagingPrice" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Packaging Price</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Role" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Roles</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="ServiceType" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Service Type</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Driver" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Drivers</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Vehicle" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Vehicles</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Company" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Company</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                          <li class="nav-item"> *@
+@*                             <a asp-controller="ExamHall" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Exam Hall</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Grade" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Grade Master</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="MarkDistribution" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Distribution</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                     </ul> *@
+@*                 </li> *@
+@*                *@
+@*                 <li class="nav-item"> *@
+@*                     <a href="#" class="nav-link"> *@
+@*                         <i class="nav-icon fas fa-user-tie"></i> *@
+@*                         <p>Employee<i class="right fas fa-angle-left"></i></p> *@
+@*                     </a> *@
+@*                     <ul class="nav nav-treeview"> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Employees" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Add Employee</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Coupon" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Coupon</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Merchant" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Add Merchant</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Shipment" asp-action="CreateShipment" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Create Shipment</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="MerchantShipment" asp-action="Create" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Create Merchant Shipments</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Dashboard" asp-action="AllShipments" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>All Shipments</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Department" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Department</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Designation" asp-action="Index" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Designation</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                     </ul> *@
+@*                 </li> *@
+@*                  *@
+@*                 <li class="nav-header">SHIPMENT MANAGEMENT</li> *@
+@*                 <li class="nav-item"> *@
+@*                     <a href="#" class="nav-link"> *@
+@*                         <i class="nav-icon fas fa-dollar-sign"></i> *@
+@*                         <p>Manifest<i class="right fas fa-angle-left"></i></p> *@
+@*                     </a> *@
+@*                     <ul class="nav nav-treeview"> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Manifest" asp-action="Create" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Create Manifest</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Manifest" asp-action="ManifestList" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Manifest List</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Receiving" asp-action="IncomingManifests" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Incoming Manifests</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Collection" asp-action="ReleasedShipments" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Release Shipments</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Collection" asp-action="CollectedHistory" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Shipment Collected History</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Report" asp-action="SalesReport" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Sales Report</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Report" asp-action="MySalesReport" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>My Sales Report</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <a asp-controller="Terminal" asp-action="Shipments" class="nav-link"> *@
+@*                                 <i class="far fa-circle nav-icon"></i> *@
+@*                                 <p>Incoming/Outgoing Report</p> *@
+@*                             </a> *@
+@*                         </li> *@
+@*                     </ul> *@
+@*                 </li> *@
+@*             </ul> *@
+@*         </nav> *@
+@*         <!-- /.sidebar-menu --> *@
+@*     </div> *@
+@*     <!-- /.sidebar --> *@
+@* </aside> *@
+
+
+
+
+
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #6a5acd;">
+    <!-- Brand Logo -->
+    <a asp-controller="Dashboard" asp-action="Index" class="brand-link">
+        <img src="~/images/MeirbinaLogo.jpeg" alt="App Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">Logistics App</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+                
+                <li class="nav-header">MAIN</li>
+                <li class="nav-item">
+                    <a asp-controller="Dashboard" asp-action="Index" class="nav-link @Html.IsActive("Dashboard")">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+              
+                <li class="nav-header">OPERATIONS</li>
+                <!-- Shipment Creation Group -->
+                <li class="nav-item @Html.IsMenuActive(new[] { "Shipment", "MerchantShipment" })">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-box"></i>
+                        <p>Create Shipment<i class="right fas fa-angle-left"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-controller="Shipment" asp-action="CreateShipment" class="nav-link @Html.IsActive("Shipment", "CreateShipment")">
+                                <i class="far fa-circle nav-icon"></i><p>New Regular Shipment</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="MerchantShipment" asp-action="Create" class="nav-link @Html.IsActive("MerchantShipment", "Create")">
+                                <i class="far fa-circle nav-icon"></i><p>New Merchant Shipment</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Manifest & Logistics Group -->
+                <li class="nav-item @Html.IsMenuActive(new[] { "Manifest", "Receiving", "Collection", "Terminal" })">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-dolly-flatbed"></i>
+                        <p>Logistics<i class="right fas fa-angle-left"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item"><a asp-controller="Manifest" asp-action="Create" class="nav-link @Html.IsActive("Manifest", "Create")"><i class="far fa-circle nav-icon"></i><p>Create Manifest</p></a></li>
+                        <li class="nav-item"><a asp-controller="Manifest" asp-action="ManifestList" class="nav-link @Html.IsActive("Manifest", "ManifestList")"><i class="far fa-circle nav-icon"></i><p>Manifest List</p></a></li>
+                        <li class="nav-item"><a asp-controller="Receiving" asp-action="IncomingManifests" class="nav-link @Html.IsActive("Receiving", "IncomingManifests")"><i class="far fa-circle nav-icon"></i><p>Incoming Manifests</p></a></li>
+                        <li class="nav-item"><a asp-controller="Collection" asp-action="ReleasedShipments" class="nav-link @Html.IsActive("Collection", "ReleasedShipments")"><i class="far fa-circle nav-icon"></i><p>Release Shipments</p></a></li>
+                        <li class="nav-item"><a asp-controller="Collection" asp-action="CollectedHistory" class="nav-link @Html.IsActive("Collection", "CollectedHistory")"><i class="far fa-circle nav-icon"></i><p>Collection History</p></a></li>
+                        <li class="nav-item"><a asp-controller="Terminal" asp-action="Shipments" class="nav-link @Html.IsActive("Terminal", "Shipments")"><i class="far fa-circle nav-icon"></i><p>Terminal Shipments</p></a></li>
+                    </ul>
+                </li>
+                <!-- Reports Group -->
+                <li class="nav-item @Html.IsMenuActive("Report")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <p>Reports<i class="right fas fa-angle-left"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item"><a asp-controller="Dashboard" asp-action="AllShipments" class="nav-link @Html.IsActive("Dashboard", "AllShipments")"><i class="far fa-circle nav-icon"></i><p>All Shipments</p></a></li>
+                        <li class="nav-item"><a asp-controller="Report" asp-action="SalesReport" class="nav-link @Html.IsActive("Report", "SalesReport")"><i class="far fa-circle nav-icon"></i><p>Admin Sales Report</p></a></li>
+                        <li class="nav-item"><a asp-controller="Report" asp-action="MySalesReport" class="nav-link @Html.IsActive("Report", "MySalesReport")"><i class="far fa-circle nav-icon"></i><p>My Sales Report</p></a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-header">ADMINISTRATION</li>
+                <!-- People & Users Group -->
+                <li class="nav-item @Html.IsMenuActive(new[] { "Employees", "Merchant", "Driver", "CustomerType", "TerminalSwitch" })">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>People<i class="right fas fa-angle-left"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item"><a asp-controller="Employees" asp-action="Index" class="nav-link @Html.IsActive("Employees")"><i class="far fa-circle nav-icon"></i><p>Manage Employees</p></a></li>
+                        <li class="nav-item"><a asp-controller="TerminalSwitch" asp-action="Index" class="nav-link @Html.IsActive("TerminalSwitch")"><i class="far fa-circle nav-icon"></i><p>Switch Terminal</p></a></li>
+                        <li class="nav-item"><a asp-controller="Merchant" asp-action="Index" class="nav-link @Html.IsActive("Merchant")"><i class="far fa-circle nav-icon"></i><p>Manage Merchants</p></a></li>
+                        <li class="nav-item"><a asp-controller="Driver" asp-action="Index" class="nav-link @Html.IsActive("Driver")"><i class="far fa-circle nav-icon"></i><p>Manage Drivers</p></a></li>
+                        <li class="nav-item"><a asp-controller="CustomerType" asp-action="Index" class="nav-link @Html.IsActive("CustomerType")"><i class="far fa-circle nav-icon"></i><p>Customer Types</p></a></li>
+                    </ul>
+                </li>
+                <!-- System Setup Group -->
+                <li class="nav-item @Html.IsMenuActive(new[] { "State", "Location", "Insurance", "PackagingPrice", "ServiceType", "Vehicle", "Company", "Coupon", "Role" })">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-cogs"></i>
+                        <p>System Setup<i class="right fas fa-angle-left"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item"><a asp-controller="State" asp-action="Index" class="nav-link @Html.IsActive("State")"><i class="far fa-circle nav-icon"></i><p>States</p></a></li>
+                        <li class="nav-item"><a asp-controller="Location" asp-action="Index" class="nav-link @Html.IsActive("Location")"><i class="far fa-circle nav-icon"></i><p>Locations</p></a></li>
+                        <li class="nav-item"><a asp-controller="Vehicle" asp-action="Index" class="nav-link @Html.IsActive("Vehicle")"><i class="far fa-circle nav-icon"></i><p>Vehicles</p></a></li>
+                        <li class="nav-item"><a asp-controller="Company" asp-action="Index" class="nav-link @Html.IsActive("Company")"><i class="far fa-circle nav-icon"></i><p>Company</p></a></li>
+                        <li class="nav-item"><a asp-controller="Insurance" asp-action="Index" class="nav-link @Html.IsActive("Insurance")"><i class="far fa-circle nav-icon"></i><p>Insurance Rates</p></a></li>
+                        <li class="nav-item"><a asp-controller="PackagingPrice" asp-action="Index" class="nav-link @Html.IsActive("PackagingPrice")"><i class="far fa-circle nav-icon"></i><p>Packaging Prices</p></a></li>
+                        <li class="nav-item"><a asp-controller="Coupon" asp-action="Index" class="nav-link @Html.IsActive("Coupon")"><i class="far fa-circle nav-icon"></i><p>Coupons</p></a></li>
+                        <li class="nav-item"><a asp-controller="ServiceType" asp-action="Index" class="nav-link @Html.IsActive("ServiceType")"><i class="far fa-circle nav-icon"></i><p>Service Types</p></a></li>
+                        <li class="nav-item"><a asp-controller="Role" asp-action="Index" class="nav-link @Html.IsActive("Role")"><i class="far fa-circle nav-icon"></i><p>User Roles</p></a></li>
+                    </ul>
+                </li>
+
+                <!-- Omitted non-logistics links like Admission, Exam Master, etc. for clarity -->
+                
+            </ul>
+        </nav>
+    </div>
+</aside>

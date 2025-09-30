@@ -1,0 +1,49 @@
+@* @model SMS.Models.ViewModels.DriverVM *@
+@* *@
+@* @{ *@
+@*     ViewData["Title"] = "Edit Driver"; *@
+@*     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml"; *@
+@* } *@
+@* *@
+@* <div class="card card-primary"> *@
+@*     <div class="card-header"> *@
+@*         <h3 class="card-title">@ViewData["Title"]</h3> *@
+@*     </div> *@
+@*     <form asp-action="Edit" method="post"> *@
+@*         @Html.AntiForgeryToken() *@
+@*         <input type="hidden" asp-for="Driver.Id" /> *@
+@* *@
+@*         <div class="card-body"> *@
+@*             <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+@* *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Driver.Name" class="control-label"></label> *@
+@*                 <input asp-for="Driver.Name" class="form-control" /> *@
+@*                 <span asp-validation-for="Driver.Name" class="text-danger"></span> *@
+@*             </div> *@
+@* *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Driver.PhoneNumber" class="control-label"></label> *@
+@*                 <input asp-for="Driver.PhoneNumber" class="form-control" /> *@
+@*                 <span asp-validation-for="Driver.PhoneNumber" class="text-danger"></span> *@
+@*             </div> *@
+@* *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Driver.CompanyId" class="control-label"></label> *@
+@*                 <select asp-for="Driver.CompanyId" class="form-control" asp-items="@Model.CompanyList"> *@
+@*                     <option disabled selected value="">-- Select Company --</option> *@
+@*                 </select> *@
+@*                 <span asp-validation-for="Driver.CompanyId" class="text-danger"></span> *@
+@*             </div> *@
+@* *@
+@*         </div> *@
+@*         <div class="card-footer"> *@
+@*             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update</button> *@
+@*             <a asp-action="Index" class="btn btn-secondary">Back to List</a> *@
+@*         </div> *@
+@*     </form> *@
+@* </div> *@
+@* *@
+@* @section Scripts { *@
+@*     <partial name="_ValidationScriptsPartial" /> *@
+@* } *@

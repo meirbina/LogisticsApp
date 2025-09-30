@@ -1,0 +1,39 @@
+@model IEnumerable<SMS.Models.Shipment>
+@{
+    ViewData["Title"] = "All Shipments";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header"><h6 class="m-0 font-weight-bold text-primary">All Created Shipments</h6></div>
+    <div class="card-body">
+        <table class="table table-bordered" id="shipmentsTable">
+            <thead>
+            <tr>
+                <th>Waybill #</th><th>Date</th><th>Sender</th><th>Receiver</th><th>Destination</th><th>Total Cost</th><th>Status</th><th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@item.WaybillNumber</td>
+                    <td>@item.DateCreated.ToString("yyyy-MM-dd")</td>
+                    <td>@item.SenderName</td>
+                    <td>@item.ReceiverName</td>
+                    <td>@item.DestinationLocation.Name</td>
+                    <td>@item.TotalCost.ToString("C")</td>
+                    <td><span class="badge badge-info">@item.Status</span></td>
+                    <td><a asp-action="Waybill" asp-route-id="@item.Id" class="btn btn-sm btn-primary" target="_blank">View</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() { $('#shipmentsTable').DataTable({"order": [[ 1, "desc" ]]}); });
+    </script>
+}

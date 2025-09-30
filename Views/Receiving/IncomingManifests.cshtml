@@ -1,0 +1,81 @@
+@model IEnumerable<SMS.Models.Manifest>
+@{
+    ViewData["Title"] = "Incoming Manifests";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header"><h6 class="m-0 font-weight-bold text-primary">Manifests In-Transit to Your Location</h6></div>
+    <div class="card-body">
+        <table class="table table-bordered" id="incomingTable">
+            <thead><tr><th>Manifest #</th><th>Dispatched Date</th><th>Departure</th><th>Actions</th></tr></thead>
+            <tbody>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@item.ManifestId</td>
+                    <td>@item.DispatchedDate?.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@item.DepartureLocation?.Name</td>
+                    <td><button class="btn btn-sm btn-info receive-btn" data-id="@item.Id" data-manifest="@item.ManifestId" data-toggle="modal" data-target="#receiveModal">Receive Shipments</button></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Receive Shipments Modal -->
+<div class="modal fade" id="receiveModal" tabindex="-1"><div class="modal-dialog modal-xl"><div class="modal-content">
+            <form asp-action="ReceiveSelected" asp-controller="Receiving" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title">Incoming Manifest #: <span id="manifestNumLabel" class="font-weight-bold"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-sm">
+                        <thead><tr><th><input type="checkbox" id="selectAll" /></th><th>Waybill</th><th>Description</th><th>Status</th></tr></thead>
+                        <tbody id="shipmentListBody"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="submit" class="btn btn-primary">Receive Selected</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div></div></div>
+
+@section Scripts {
+    <script>
+        $(function() {
+            $('#incomingTable').DataTable();
+
+            $('.receive-btn').on('click', function() {
+                var manifestId = $(this).data('manifest');
+                var manifestDbId = $(this).data('id');
+                $('#manifestNumLabel').text(manifestId);
+
+                var tableBody = $('#shipmentListBody');
+                tableBody.html('<tr><td colspan="4" class="text-center">Loading shipments...</td></tr>');
+
+                $.getJSON('/Receiving/GetShipmentsForManifest', { manifestDbId: manifestDbId }, function(data) {
+                    tableBody.empty();
+                    $.each(data, function(i, item) {
+                        var isArrived = item.status === 'Arrived';
+                        var row = `<tr>
+                        <td><input type="checkbox" name="selectedWaybills" value="${item.waybillNumber}" ${isArrived ? 'disabled' : ''} /></td>
+                        <td>${item.waybillNumber}</td>
+                        <td>${item.description || 'N/A'}</td>
+                        <td><span class="badge ${isArrived ? 'badge-success' : 'badge-info'}">${item.status}</span></td>
+                    </tr>`;
+                        tableBody.append(row);
+                    });
+                });
+            });
+
+            $('#selectAll').on('click', function() {
+                $('#shipmentListBody input[type="checkbox"]:not(:disabled)').prop('checked', this.checked);
+            });
+        });
+    </script>
+}

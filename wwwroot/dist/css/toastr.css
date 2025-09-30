@@ -1,0 +1,18 @@
+/* toastr css */
+/* Toastr red background for warning */
+.toast-warning {
+    background-color: #ff4d4d !important; /* Bright red */
+    color: #fff !important; /* White text for contrast */
+  }
+  
+  /* Toastr red background for error (optional, if used for errors) */
+  .toast-error {
+    background-color: #ff4d4d !important; /* Bright red */
+    color: #fff !important;
+  }
+  
+  /* Optional: Customize the close button for better contrast */
+  .toast-warning .toast-close-button,
+  .toast-error .toast-close-button {
+    color: #fff !important; /* White close button */
+  }

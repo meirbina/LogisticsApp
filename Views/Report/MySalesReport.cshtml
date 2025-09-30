@@ -1,0 +1,77 @@
+@model SMS.Models.ViewModels.MySalesReportVM
+@{
+    ViewData["Title"] = "My Sales Report";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid"><div class="row mb-2">
+            <div class="col-sm-6"><h1>My Sales Report</h1><p class="text-muted">Your personal sales report</p></div>
+        </div></div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-default">
+            <div class="card-header"><h3 class="card-title">Filter your sales</h3></div>
+            <div class="card-body">
+                <form asp-action="MySalesReport" method="get">
+                    <div class="row align-items-end">
+                        <div class="form-group col-md-4"><label asp-for="StartDate"></label><input asp-for="StartDate" class="form-control" /></div>
+                        <div class="form-group col-md-4"><label asp-for="EndDate"></label><input asp-for="EndDate" class="form-control" /></div>
+                        <div class="form-group col-md-2"><button type="submit" class="btn btn-primary btn-block">Search</button></div>
+                        <div class="form-group col-md-2"><a asp-action="MySalesReport" class="btn btn-secondary btn-block">Today's Report</a></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header"><h3 class="card-title">Your Shipments in Selected Range</h3></div>
+                    <div class="card-body">
+                        <table class="table table-striped" id="mySalesTable">
+                            <thead><tr><th>Waybill</th><th>Date</th><th>Description</th><th>Payment</th><th>Cost</th></tr></thead>
+                            <tbody>
+                            @foreach (var shipment in Model.Shipments)
+                            {
+                                <tr>
+                                    <td>@shipment.WaybillNumber</td>
+                                    <td>@shipment.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@shipment.ItemDescription</td>
+                                    <td>@shipment.PaymentMethod</td>
+                                    <td>@shipment.TotalCost.ToString("N2")</td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="text-center">Your Total Sales</h5>
+                        <h2 class="text-center font-weight-bold text-success">@Model.Summary.GrandTotalSales.ToString("C", new System.Globalization.CultureInfo("en-NG"))</h2>
+                        <p class="text-center text-muted">@Model.StartDate.ToString("ddd, dd MMM yyyy") to @Model.EndDate.ToString("ddd, dd MMM yyyy")</p>
+                        <hr/>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between"><span>Total POS:</span> <strong>@Model.Summary.TotalPos.ToString("N2")</strong></li>
+                            <li class="list-group-item d-flex justify-content-between"><span>Total Cash:</span> <strong>@Model.Summary.TotalCash.ToString("N2")</strong></li>
+                            <li class="list-group-item d-flex justify-content-between"><span>Total Transfer:</span> <strong>@Model.Summary.TotalTransfer.ToString("N2")</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(function() {
+            $('#mySalesTable').DataTable({ "order": [[ 1, "desc" ]] });
+        });
+    </script>
+}
