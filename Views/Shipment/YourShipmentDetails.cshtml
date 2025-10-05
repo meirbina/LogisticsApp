@@ -29,10 +29,12 @@
 @*         </div> *@
 @*         <div id="couponMessage" class="mb-2"></div> *@
 @* *@
-@*         <form asp-action="ConfirmShipment" method="post"> *@
+@*         <!-- THE FIX: Change the form tag and button type --> *@
+@*         <form id="confirmShipmentForm" asp-action="ConfirmShipment" method="post"> *@
 @*             @Html.AntiForgeryToken() *@
 @*             <input type="hidden" name="couponCode" id="appliedCouponCode" /> *@
-@*             <button type="submit" class="btn btn-success btn-lg btn-block">Confirm & Generate Waybill</button> *@
+@*             <!-- Note: The button is now type="button" to prevent default submission --> *@
+@*             <button type="button" id="confirmAndGenerateBtn" class="btn btn-success btn-lg btn-block">Confirm & Generate Waybill</button> *@
 @*             <a asp-action="CreateShipment" class="btn btn-secondary btn-block mt-2">Back to Edit</a> *@
 @*         </form> *@
 @*     </div> *@
@@ -41,13 +43,13 @@
 @* @section Scripts { *@
 @*     <script> *@
 @*         $(function() { *@
+@*             var originalTotal = @Model.PriceDetails.TotalToPay; *@
+@* *@
 @*             $('#applyCouponBtn').on('click', function() { *@
 @*                 var code = $('#couponCode').val(); *@
 @*                 if (!code) return; *@
 @* *@
-@*                 var total = @Model.PriceDetails.TotalToPay; *@
-@* *@
-@*                 $.post('@Url.Action("ApplyCoupon", "Shipment")', { couponCode: code, currentTotal: total }, function(response) { *@
+@*                 $.post('@Url.Action("ApplyCoupon", "Shipment")', { couponCode: code, currentTotal: originalTotal }, function(response) { *@
 @*                     var msgDiv = $('#couponMessage'); *@
 @*                     if(response.success) { *@
 @*                         $('#discountAmount').text('(' + response.discount.toFixed(2) + ')'); *@
@@ -56,19 +58,58 @@
 @*                         msgDiv.html('<div class="alert alert-success p-2">' + response.message + '</div>'); *@
 @*                     } else { *@
 @*                         $('#discountAmount').text('(0.00)'); *@
-@*                         $('#finalTotal').text(total.toFixed(2)); *@
+@*                         $('#finalTotal').text(originalTotal.toFixed(2)); *@
 @*                         $('#appliedCouponCode').val(''); // Clear invalid coupon *@
 @*                         msgDiv.html('<div class="alert alert-danger p-2">' + response.message + '</div>'); *@
+@*                     } *@
+@*                 }); *@
+@*             }); *@
+@* *@
+@*             // --- THE FIX: Handle form submission with AJAX --- *@
+@*             $('#confirmAndGenerateBtn').on('click', function(e) { *@
+@*                 e.preventDefault(); // Prevent the form from submitting normally *@
+@* *@
+@*                 var form = $('#confirmShipmentForm'); *@
+@*                 var button = $(this); *@
+@*                 button.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...'); *@
+@* *@
+@*                 $.ajax({ *@
+@*                     type: 'POST', *@
+@*                     url: form.attr('action'), *@
+@*                     data: form.serialize(), *@
+@*                     success: function(response) { *@
+@*                         if (response.success) { *@
+@*                             // Open the waybill in a new tab *@
+@*                             window.open(response.redirectUrl, '_blank'); *@
+@*                             // Redirect the main page back to the shipment creation page for the next one *@
+@*                             window.location.href = '@Url.Action("CreateShipment", "Shipment")'; *@
+@*                         } else { *@
+@*                             // Show an error message if something went wrong on the server *@
+@*                             alert('Error: ' + response.message); *@
+@*                             button.prop('disabled', false).html('Confirm & Generate Waybill'); *@
+@*                         } *@
+@*                     }, *@
+@*                     error: function() { *@
+@*                         alert('An unexpected error occurred. Please try again.'); *@
+@*                         button.prop('disabled', false).html('Confirm & Generate Waybill'); *@
 @*                     } *@
 @*                 }); *@
 @*             }); *@
 @*         }); *@
 @*     </script> *@
 @* } *@
+@* *@
+@* *@
+
+
+
+
+
+
 
 
 @model SMS.Models.ViewModels.CreateShipmentVM
-@{
+@{ 
     ViewData["Title"] = "Review Shipment Details";
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
@@ -97,14 +138,12 @@
             <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" id="applyCouponBtn">Apply</button></div>
         </div>
         <div id="couponMessage" class="mb-2"></div>
-
-        <!-- THE FIX: Change the form tag and button type -->
+        
         <form id="confirmShipmentForm" asp-action="ConfirmShipment" method="post">
             @Html.AntiForgeryToken()
             <input type="hidden" name="couponCode" id="appliedCouponCode" />
-            <!-- Note: The button is now type="button" to prevent default submission -->
             <button type="button" id="confirmAndGenerateBtn" class="btn btn-success btn-lg btn-block">Confirm & Generate Waybill</button>
-            <a asp-action="CreateShipment" class="btn btn-secondary btn-block mt-2">Back to Edit</a>
+            <a asp-action="EditShipment" asp-controller="Shipment" class="btn btn-secondary btn-block mt-2">Back to Edit</a>
         </form>
     </div>
 </div>
@@ -115,45 +154,33 @@
             var originalTotal = @Model.PriceDetails.TotalToPay;
 
             $('#applyCouponBtn').on('click', function() {
-                var code = $('#couponCode').val();
-                if (!code) return;
-                
+                var code = $('#couponCode').val(); if (!code) return;
                 $.post('@Url.Action("ApplyCoupon", "Shipment")', { couponCode: code, currentTotal: originalTotal }, function(response) {
                     var msgDiv = $('#couponMessage');
                     if(response.success) {
                         $('#discountAmount').text('(' + response.discount.toFixed(2) + ')');
                         $('#finalTotal').text(response.newTotal.toFixed(2));
-                        $('#appliedCouponCode').val(code); // Store the valid coupon for submission
+                        $('#appliedCouponCode').val(code);
                         msgDiv.html('<div class="alert alert-success p-2">' + response.message + '</div>');
                     } else {
                         $('#discountAmount').text('(0.00)');
                         $('#finalTotal').text(originalTotal.toFixed(2));
-                        $('#appliedCouponCode').val(''); // Clear invalid coupon
+                        $('#appliedCouponCode').val('');
                         msgDiv.html('<div class="alert alert-danger p-2">' + response.message + '</div>');
                     }
                 });
             });
 
-            // --- THE FIX: Handle form submission with AJAX ---
             $('#confirmAndGenerateBtn').on('click', function(e) {
-                e.preventDefault(); // Prevent the form from submitting normally
-
-                var form = $('#confirmShipmentForm');
-                var button = $(this);
-                button.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...');
-
+                e.preventDefault(); var form = $('#confirmShipmentForm'); var button = $(this);
+                button.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Generating...');
                 $.ajax({
-                    type: 'POST',
-                    url: form.attr('action'),
-                    data: form.serialize(),
+                    type: 'POST', url: form.attr('action'), data: form.serialize(),
                     success: function(response) {
                         if (response.success) {
-                            // Open the waybill in a new tab
                             window.open(response.redirectUrl, '_blank');
-                            // Redirect the main page back to the shipment creation page for the next one
                             window.location.href = '@Url.Action("CreateShipment", "Shipment")';
                         } else {
-                            // Show an error message if something went wrong on the server
                             alert('Error: ' + response.message);
                             button.prop('disabled', false).html('Confirm & Generate Waybill');
                         }

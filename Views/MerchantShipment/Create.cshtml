@@ -1,9 +1,190 @@
+@* @using Newtonsoft.Json *@
+@* @model SMS.Models.ViewModels.CreateMerchantShipmentVM *@
+@* @{ *@
+@*     ViewData["Title"] = "Create Merchant Shipment"; *@
+@*     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml"; *@
+@*     var packagingItemsJson = Html.Raw(JsonConvert.SerializeObject(Model.PackagingItems)); *@
+@* } *@
+@* *@
+@* <div class="row"> *@
+@*     <div class="col-lg-8"> *@
+@*         <form asp-action="ReviewShipment" method="post" id="shipment-form"> *@
+@*             @Html.AntiForgeryToken() *@
+@*             <div class="alert alert-info">Creating shipment as: <strong>@Model.LoggedInUserEmail</strong></div> *@
+@*             <div asp-validation-summary="All" class="text-danger mb-3"></div> *@
+@* *@
+@*             <div class="card mb-3"><div class="card-header">Merchant (Sender) Information</div> *@
+@*                 <div class="card-body"> *@
+@*                     <div class="form-group"> *@
+@*                         <label asp-for="MerchantId"></label> *@
+@*                         <select asp-for="MerchantId" asp-items="Model.MerchantList" class="form-control"><option value="">-- Select Merchant --</option></select> *@
+@*                     </div> *@
+@*                     <div class="row"> *@
+@*                         <div class="form-group col-md-4"><label>Business Name</label><input id="senderName" class="form-control" readonly /></div> *@
+@*                         <div class="form-group col-md-4"><label>Business Phone</label><input id="senderPhone" class="form-control" readonly /></div> *@
+@*                         <div class="form-group col-md-4"><label>Business Email</label><input id="senderEmail" class="form-control" readonly /></div> *@
+@*                         <div class="form-group col-12"><label>Business Address</label><textarea id="senderAddress" class="form-control" readonly rows="2"></textarea></div> *@
+@*                     </div> *@
+@*                 </div></div> *@
+@* *@
+@*             <div class="card mb-3"><div class="card-header">Receiver Information</div> *@
+@*                 <div class="card-body row"> *@
+@*                     <div class="form-group col-md-4"><label asp-for="ReceiverName"></label><input asp-for="ReceiverName" class="form-control" /></div> *@
+@*                     <div class="form-group col-md-4"><label asp-for="ReceiverPhoneNumber"></label><input asp-for="ReceiverPhoneNumber" class="form-control" /></div> *@
+@*                     <div class="form-group col-md-4"><label asp-for="ReceiverAddress"></label><input asp-for="ReceiverAddress" class="form-control" /></div> *@
+@*                     <div class="form-group col-md-6"><label asp-for="ReceiverStateId"></label><select asp-for="ReceiverStateId" asp-items="Model.States" id="stateDropdown" class="form-control"><option value="">-- Select State --</option></select></div> *@
+@*                     <div class="form-group col-md-6"><label asp-for="DestinationLocationId">Select bike originating terminal</label><select asp-for="DestinationLocationId" id="locationDropdown" class="form-control"><option value="">-- Select State First --</option></select></div> *@
+@*                 </div></div> *@
+@* *@
+@*             <div class="card mb-3"><div class="card-header">Financial Information</div> *@
+@*                 <div class="card-body row"> *@
+@*                     <div class="form-group col-md-4"><label asp-for="PaymentMethod"></label><select asp-for="PaymentMethod" class="form-control"><option>POS</option><option>Cash</option><option>Transfer</option></select></div> *@
+@*                     <div class="form-group col-md-4"><label asp-for="DeclaredValue"></label><input asp-for="DeclaredValue" type="number" step="0.01" class="form-control" value="0"/></div> *@
+@*                     <div class="form-group col-md-4"><label asp-for="InsuranceId"></label><select asp-for="InsuranceId" asp-items="Model.InsuranceOptions" class="form-control"><option value="">-- No Insurance --</option></select></div> *@
+@*                 </div></div> *@
+@* *@
+@*             <div class="card mb-3"><div class="card-header">Shipment Items</div> *@
+@*                 <div class="card-body"><div id="itemsContainer"></div><button type="button" id="addItemBtn" class="btn btn-info mt-2"><i class="fas fa-plus"></i> Add Item</button></div></div> *@
+@* *@
+@*             <button type="submit" class="btn btn-primary btn-lg">Review Shipment</button> *@
+@*         </form> *@
+@*     </div> *@
+@* *@
+@*     <div class="col-lg-4"> *@
+@*         <div class="card sticky-top"> *@
+@*             <div class="card-header"><h4>Live Price Summary</h4></div> *@
+@*             <div class="card-body" id="price-summary"> *@
+@*                 <dl class="row"><dt class="col-7">Shipment Cost:</dt><dd class="col-5 text-right" id="summaryShipmentCost">0.00</dd></dl> *@
+@*                 <dl class="row"><dt class="col-7">Packaging Fee:</dt><dd class="col-5 text-right" id="summaryPackagingCost">0.00</dd></dl> *@
+@*                 <dl class="row"><dt class="col-7">Insurance Fee:</dt><dd class="col-5 text-right" id="summaryInsuranceCost">0.00</dd></dl> *@
+@*                 <dl class="row border-top pt-2"><dt class="col-7">Sub-Total:</dt><dd class="col-5 text-right font-weight-bold" id="summarySubTotal">0.00</dd></dl> *@
+@*                 <dl class="row"><dt class="col-7">VAT (7.5%):</dt><dd class="col-5 text-right" id="summaryVat">0.00</dd></dl> *@
+@*                 <dl class="row border-top pt-2"><dt class="col-7 h5">TOTAL:</dt><dd class="col-5 text-right h5" id="summaryTotal">0.00</dd></dl> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+@* *@
+@* <div class="modal fade" id="priceErrorModal" tabindex="-1"> *@
+@*     <div class="modal-dialog"><div class="modal-content"> *@
+@*             <div class="modal-header"><h5 class="modal-title text-danger">Pricing Error</h5></div> *@
+@*             <div class="modal-body"><p id="priceErrorMessage"></p></div> *@
+@*             <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div> *@
+@*         </div></div> *@
+@* </div> *@
+@* *@
+@* @section Scripts { *@
+@*     <script> *@
+@*         $(document).ready(function() { *@
+@*             const packagingItems = @packagingItemsJson; *@
+@* *@
+@*             function updatePrice() { *@
+@*                 var merchantId = $('#MerchantId').val(); *@
+@*                 if (!merchantId) { *@
+@*                     // If no merchant is selected, do nothing. *@
+@*                     return; *@
+@*                 } *@
+@* *@
+@*                 var formData = $('#shipment-form').serializeArray(); *@
+@*                 var jsonData = { Items: [] }; var itemsMap = {}; *@
+@*                 $.each(formData, function(i, field){ *@
+@*                     var itemMatch = field.name.match(/Items\[(\d+)\]\.(.*)/); *@
+@*                     if (itemMatch) { *@
+@*                         var index = itemMatch[1], prop = itemMatch[2]; *@
+@*                         if (!itemsMap[index]) itemsMap[index] = {}; *@
+@*                         itemsMap[index][prop] = field.value || 0; *@
+@*                     } else { jsonData[field.name] = field.value || 0; } *@
+@*                 }); *@
+@*                 for (var key in itemsMap) { jsonData.Items.push(itemsMap[key]); } *@
+@* *@
+@*                 $.ajax({ *@
+@*                     url: '@Url.Action("CalculatePrice", "MerchantShipment")', *@
+@*                     type: 'POST', contentType: 'application/json', *@
+@*                     data: JSON.stringify(jsonData), *@
+@*                     success: function(response) { *@
+@*                         if (response.success) { *@
+@*                             var price = response.price; *@
+@*                             $('#summaryShipmentCost').text(parseFloat(price.shipmentCost).toFixed(2)); *@
+@*                             $('#summaryPackagingCost').text(parseFloat(price.packagingCost).toFixed(2)); *@
+@*                             $('#summaryInsuranceCost').text(parseFloat(price.insuranceCost).toFixed(2)); *@
+@*                             $('#summarySubTotal').text(parseFloat(price.subTotal).toFixed(2)); *@
+@*                             $('#summaryVat').text(parseFloat(price.vat).toFixed(2)); *@
+@*                             $('#summaryTotal').text(parseFloat(price.totalToPay).toFixed(2)); *@
+@*                         } else { *@
+@*                             $('#priceErrorMessage').text(response.message); *@
+@*                             $('#priceErrorModal').modal('show'); *@
+@*                             $('#summaryShipmentCost').text('Error'); *@
+@*                             $('#summaryTotal').text('Error'); *@
+@*                         } *@
+@*                     } *@
+@*                 }); *@
+@*             } *@
+@*             $('#shipment-form').on('change keyup', 'input, select', function() { setTimeout(updatePrice, 200); }); *@
+@* *@
+@*             let itemIndex = 0; *@
+@*             function addItemRow() { *@
+@*                 let packagingOptions = '<option value="0">-- None --</option>'; *@
+@*                 packagingItems.forEach(function(item) { packagingOptions += `<option value="${item.Value}">${item.Text}</option>`; }); *@
+@*                 var html = ` *@
+@*             <div class="row item-row border-bottom pb-3 mb-3"> *@
+@*                 <div class="form-group col-md-3"><label>Description</label><input name="Items[${itemIndex}].Description" class="form-control" required/></div> *@
+@*                 <div class="form-group col-md-2"><label>Weight (KG)</label><input name="Items[${itemIndex}].Weight" type="number" step="0.1" class="form-control" required/></div> *@
+@*                 <div class="form-group col-md-2"><label>Condition</label><select name="Items[${itemIndex}].Condition" class="form-control"><option>Good</option><option>Damaged</option><option>Partially Damaged</option></select></div> *@
+@*                 <div class="form-group col-md-3"><label>Packaging</label><select name="Items[${itemIndex}].PackagingPriceId" class="form-control">${packagingOptions}</select></div> *@
+@*                 <div class="form-group col-md-1"><label>Qty</label><input name="Items[${itemIndex}].NumberOfPackagingItems" type="number" class="form-control" value="1" min="1"/></div> *@
+@*                 <div class="col-md-1 d-flex align-items-end"><button type="button" class="btn btn-danger remove-item-btn">X</button></div> *@
+@*             </div>`; *@
+@*                 $('#itemsContainer').append(html); itemIndex++; *@
+@*             } *@
+@*             $('#addItemBtn').on('click', function() { addItemRow(); setTimeout(updatePrice, 200); }); *@
+@*             $('#itemsContainer').on('click', '.remove-item-btn', function() { $(this).closest('.item-row').remove(); updatePrice(); }); *@
+@*             addItemRow(); *@
+@* *@
+@*             $('#stateDropdown').on('change', function() { *@
+@*                 var stateId = $(this).val(); var locDD = $('#locationDropdown'); *@
+@*                 locDD.empty().append('<option>Loading...</option>'); *@
+@*                 if(stateId) { *@
+@*                     $.getJSON('/Shipment/GetLocationsByState', { stateId: stateId }, function(data) { *@
+@*                         locDD.empty().append('<option value="">-- Select Terminal --</option>'); *@
+@*                         $.each(data, function(i, item) { locDD.append($('<option>', { value: item.id, text: item.name })); }); *@
+@*                     }); *@
+@*                 } else { locDD.empty().append('<option>-- Select State First --</option>'); } *@
+@*             }); *@
+@* *@
+@*             $('#MerchantId').on('change', function() { *@
+@*                 var merchantId = $(this).val(); *@
+@*                 if (merchantId) { *@
+@*                     $.getJSON('/MerchantShipment/GetMerchantDetails', { merchantId: merchantId }, function(data) { *@
+@*                         if(data) { *@
+@*                             $('#senderName').val(data.businessName); *@
+@*                             $('#senderPhone').val(data.businessPhoneNumber); *@
+@*                             $('#senderEmail').val(data.businessEmail); *@
+@*                             $('#senderAddress').val(data.businessAddress); *@
+@*                         } *@
+@*                     }); *@
+@*                 } else { $('#senderName, #senderPhone, #senderEmail, #senderAddress').val(''); } *@
+@*                 updatePrice(); *@
+@*             }); *@
+@*         }); *@
+@*     </script> *@
+@* } *@
+
+
+
+
+
+
+
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Newtonsoft.Json
+@using SMS.Models.ViewModels
 @model SMS.Models.ViewModels.CreateMerchantShipmentVM
-@{
+@{ 
     ViewData["Title"] = "Create Merchant Shipment";
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
     var packagingItemsJson = Html.Raw(JsonConvert.SerializeObject(Model.PackagingItems));
+    // Serialize existing items if they exist (for the "Back to Edit" feature)
+    var existingItemsJson = Html.Raw(JsonConvert.SerializeObject(Model.Items ?? new List<ShipmentItemVM>()));
 }
 
 <div class="row">
@@ -14,42 +195,42 @@
             <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
             <div class="card mb-3"><div class="card-header">Merchant (Sender) Information</div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <label asp-for="MerchantId"></label>
-                        <select asp-for="MerchantId" asp-items="Model.MerchantList" class="form-control"><option value="">-- Select Merchant --</option></select>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-4"><label>Business Name</label><input id="senderName" class="form-control" readonly /></div>
-                        <div class="form-group col-md-4"><label>Business Phone</label><input id="senderPhone" class="form-control" readonly /></div>
-                        <div class="form-group col-md-4"><label>Business Email</label><input id="senderEmail" class="form-control" readonly /></div>
-                        <div class="form-group col-12"><label>Business Address</label><textarea id="senderAddress" class="form-control" readonly rows="2"></textarea></div>
-                    </div>
-                </div></div>
-
+            <div class="card-body">
+                <div class="form-group">
+                    <label asp-for="MerchantId"></label>
+                    <select asp-for="MerchantId" asp-items="Model.MerchantList" class="form-control"><option value="">-- Select Merchant --</option></select>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-4"><label>Business Name</label><input id="senderName" class="form-control" readonly /></div>
+                    <div class="form-group col-md-4"><label>Business Phone</label><input id="senderPhone" class="form-control" readonly /></div>
+                    <div class="form-group col-md-4"><label>Business Email</label><input id="senderEmail" class="form-control" readonly /></div>
+                    <div class="form-group col-12"><label>Business Address</label><textarea id="senderAddress" class="form-control" readonly rows="2"></textarea></div>
+                </div>
+            </div></div>
+            
             <div class="card mb-3"><div class="card-header">Receiver Information</div>
-                <div class="card-body row">
-                    <div class="form-group col-md-4"><label asp-for="ReceiverName"></label><input asp-for="ReceiverName" class="form-control" /></div>
-                    <div class="form-group col-md-4"><label asp-for="ReceiverPhoneNumber"></label><input asp-for="ReceiverPhoneNumber" class="form-control" /></div>
-                    <div class="form-group col-md-4"><label asp-for="ReceiverAddress"></label><input asp-for="ReceiverAddress" class="form-control" /></div>
-                    <div class="form-group col-md-6"><label asp-for="ReceiverStateId"></label><select asp-for="ReceiverStateId" asp-items="Model.States" id="stateDropdown" class="form-control"><option value="">-- Select State --</option></select></div>
-                    <div class="form-group col-md-6"><label asp-for="DestinationLocationId">Select bike originating terminal</label><select asp-for="DestinationLocationId" id="locationDropdown" class="form-control"><option value="">-- Select State First --</option></select></div>
-                </div></div>
+            <div class="card-body row">
+                <div class="form-group col-md-4"><label asp-for="ReceiverName"></label><input asp-for="ReceiverName" class="form-control" /></div>
+                <div class="form-group col-md-4"><label asp-for="ReceiverPhoneNumber"></label><input asp-for="ReceiverPhoneNumber" class="form-control" /></div>
+                <div class="form-group col-md-4"><label asp-for="ReceiverAddress"></label><input asp-for="ReceiverAddress" class="form-control" /></div>
+                <div class="form-group col-md-6"><label asp-for="ReceiverStateId"></label><select asp-for="ReceiverStateId" asp-items="Model.States" id="stateDropdown" class="form-control"><option value="">-- Select State --</option></select></div>
+                <div class="form-group col-md-6"><label asp-for="DestinationLocationId">Select bike originating terminal</label><select asp-for="DestinationLocationId" id="locationDropdown" class="form-control"><option value="">-- Select State First --</option></select></div>
+            </div></div>
 
             <div class="card mb-3"><div class="card-header">Financial Information</div>
-                <div class="card-body row">
-                    <div class="form-group col-md-4"><label asp-for="PaymentMethod"></label><select asp-for="PaymentMethod" class="form-control"><option>POS</option><option>Cash</option><option>Transfer</option></select></div>
-                    <div class="form-group col-md-4"><label asp-for="DeclaredValue"></label><input asp-for="DeclaredValue" type="number" step="0.01" class="form-control" value="0"/></div>
-                    <div class="form-group col-md-4"><label asp-for="InsuranceId"></label><select asp-for="InsuranceId" asp-items="Model.InsuranceOptions" class="form-control"><option value="">-- No Insurance --</option></select></div>
-                </div></div>
-
+            <div class="card-body row">
+                <div class="form-group col-md-4"><label asp-for="PaymentMethod"></label><select asp-for="PaymentMethod" class="form-control"><option>POS</option><option>Cash</option><option>Transfer</option></select></div>
+                <div class="form-group col-md-4"><label asp-for="DeclaredValue"></label><input asp-for="DeclaredValue" type="number" step="0.01" class="form-control" value="0"/></div>
+                <div class="form-group col-md-4"><label asp-for="InsuranceId"></label><select asp-for="InsuranceId" asp-items="Model.InsuranceOptions" class="form-control"><option value="">-- No Insurance --</option></select></div>
+            </div></div>
+            
             <div class="card mb-3"><div class="card-header">Shipment Items</div>
-                <div class="card-body"><div id="itemsContainer"></div><button type="button" id="addItemBtn" class="btn btn-info mt-2"><i class="fas fa-plus"></i> Add Item</button></div></div>
-
+            <div class="card-body"><div id="itemsContainer"></div><button type="button" id="addItemBtn" class="btn btn-info mt-2"><i class="fas fa-plus"></i> Add Item</button></div></div>
+            
             <button type="submit" class="btn btn-primary btn-lg">Review Shipment</button>
         </form>
     </div>
-
+    
     <div class="col-lg-4">
         <div class="card sticky-top">
             <div class="card-header"><h4>Live Price Summary</h4></div>
@@ -66,66 +247,61 @@
 </div>
 
 <div class="modal fade" id="priceErrorModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
-            <div class="modal-header"><h5 class="modal-title text-danger">Pricing Error</h5></div>
-            <div class="modal-body"><p id="priceErrorMessage"></p></div>
-            <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div>
-        </div></div>
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title text-danger">Pricing Error</h5></div>
+    <div class="modal-body"><p id="priceErrorMessage"></p></div>
+    <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div>
+  </div></div>
 </div>
 
 @section Scripts {
-    <script>
-        $(document).ready(function() {
-            const packagingItems = @packagingItemsJson;
+<script>
+    $(document).ready(function() {
+        const packagingItems = @packagingItemsJson;
+        const existingItems = @existingItemsJson;
 
-            function updatePrice() {
-                var merchantId = $('#MerchantId').val();
-                if (!merchantId) {
-                    // If no merchant is selected, do nothing.
-                    return;
-                }
+        function updatePrice() {
+            var merchantId = $('#MerchantId').val();
+            if (!merchantId) { return; }
+            var formData = $('#shipment-form').serializeArray();
+            var jsonData = { Items: [] }; var itemsMap = {};
+            $.each(formData, function(i, field){
+                var itemMatch = field.name.match(/Items\[(\d+)\]\.(.*)/);
+                if (itemMatch) {
+                    var index = itemMatch[1], prop = itemMatch[2];
+                    if (!itemsMap[index]) itemsMap[index] = {};
+                    itemsMap[index][prop] = field.value || 0;
+                } else { jsonData[field.name] = field.value || 0; }
+            });
+            for (var key in itemsMap) { jsonData.Items.push(itemsMap[key]); }
 
-                var formData = $('#shipment-form').serializeArray();
-                var jsonData = { Items: [] }; var itemsMap = {};
-                $.each(formData, function(i, field){
-                    var itemMatch = field.name.match(/Items\[(\d+)\]\.(.*)/);
-                    if (itemMatch) {
-                        var index = itemMatch[1], prop = itemMatch[2];
-                        if (!itemsMap[index]) itemsMap[index] = {};
-                        itemsMap[index][prop] = field.value || 0;
-                    } else { jsonData[field.name] = field.value || 0; }
-                });
-                for (var key in itemsMap) { jsonData.Items.push(itemsMap[key]); }
-
-                $.ajax({
-                    url: '@Url.Action("CalculatePrice", "MerchantShipment")',
-                    type: 'POST', contentType: 'application/json',
-                    data: JSON.stringify(jsonData),
-                    success: function(response) {
-                        if (response.success) {
-                            var price = response.price;
-                            $('#summaryShipmentCost').text(parseFloat(price.shipmentCost).toFixed(2));
-                            $('#summaryPackagingCost').text(parseFloat(price.packagingCost).toFixed(2));
-                            $('#summaryInsuranceCost').text(parseFloat(price.insuranceCost).toFixed(2));
-                            $('#summarySubTotal').text(parseFloat(price.subTotal).toFixed(2));
-                            $('#summaryVat').text(parseFloat(price.vat).toFixed(2));
-                            $('#summaryTotal').text(parseFloat(price.totalToPay).toFixed(2));
-                        } else {
-                            $('#priceErrorMessage').text(response.message);
-                            $('#priceErrorModal').modal('show');
-                            $('#summaryShipmentCost').text('Error');
-                            $('#summaryTotal').text('Error');
-                        }
+            $.ajax({
+                url: '@Url.Action("CalculatePrice", "MerchantShipment")', type: 'POST', contentType: 'application/json',
+                data: JSON.stringify(jsonData),
+                success: function(response) {
+                    if (response.success) {
+                        var price = response.price;
+                        $('#summaryShipmentCost').text(parseFloat(price.shipmentCost).toFixed(2));
+                        $('#summaryPackagingCost').text(parseFloat(price.packagingCost).toFixed(2));
+                        $('#summaryInsuranceCost').text(parseFloat(price.insuranceCost).toFixed(2));
+                        $('#summarySubTotal').text(parseFloat(price.subTotal).toFixed(2));
+                        $('#summaryVat').text(parseFloat(price.vat).toFixed(2));
+                        $('#summaryTotal').text(parseFloat(price.totalToPay).toFixed(2));
+                    } else {
+                        $('#priceErrorMessage').text(response.message);
+                        $('#priceErrorModal').modal('show');
+                        $('#summaryShipmentCost, #summaryTotal').text('Error');
                     }
-                });
-            }
-            $('#shipment-form').on('change keyup', 'input, select', function() { setTimeout(updatePrice, 200); });
-
-            let itemIndex = 0;
-            function addItemRow() {
-                let packagingOptions = '<option value="0">-- None --</option>';
-                packagingItems.forEach(function(item) { packagingOptions += `<option value="${item.Value}">${item.Text}</option>`; });
-                var html = `
+                }
+            });
+        }
+        $('#shipment-form').on('change keyup', 'input, select', function() { setTimeout(updatePrice, 200); });
+        
+        let itemIndex = 0;
+        function addItemRow(itemData = null) {
+            let packagingOptions = '<option value="0">-- None --</option>';
+            packagingItems.forEach(function(item) { packagingOptions += `<option value="${item.Value}">${item.Text}</option>`; });
+            var html = `
             <div class="row item-row border-bottom pb-3 mb-3">
                 <div class="form-group col-md-3"><label>Description</label><input name="Items[${itemIndex}].Description" class="form-control" required/></div>
                 <div class="form-group col-md-2"><label>Weight (KG)</label><input name="Items[${itemIndex}].Weight" type="number" step="0.1" class="form-control" required/></div>
@@ -134,37 +310,64 @@
                 <div class="form-group col-md-1"><label>Qty</label><input name="Items[${itemIndex}].NumberOfPackagingItems" type="number" class="form-control" value="1" min="1"/></div>
                 <div class="col-md-1 d-flex align-items-end"><button type="button" class="btn btn-danger remove-item-btn">X</button></div>
             </div>`;
-                $('#itemsContainer').append(html); itemIndex++;
+            
+            var newRow = $(html);
+            if(itemData) {
+                newRow.find(`[name="Items[${itemIndex}].Description"]`).val(itemData.Description);
+                newRow.find(`[name="Items[${itemIndex}].Weight"]`).val(itemData.Weight);
+                newRow.find(`[name="Items[${itemIndex}].Condition"]`).val(itemData.Condition);
+                newRow.find(`[name="Items[${itemIndex}].PackagingPriceId"]`).val(itemData.PackagingPriceId);
+                newRow.find(`[name="Items[${itemIndex}].NumberOfPackagingItems"]`).val(itemData.NumberOfPackagingItems);
             }
-            $('#addItemBtn').on('click', function() { addItemRow(); setTimeout(updatePrice, 200); });
-            $('#itemsContainer').on('click', '.remove-item-btn', function() { $(this).closest('.item-row').remove(); updatePrice(); });
-            addItemRow();
+            $('#itemsContainer').append(newRow); itemIndex++;
+        }
 
-            $('#stateDropdown').on('change', function() {
-                var stateId = $(this).val(); var locDD = $('#locationDropdown');
-                locDD.empty().append('<option>Loading...</option>');
-                if(stateId) {
-                    $.getJSON('/Shipment/GetLocationsByState', { stateId: stateId }, function(data) {
-                        locDD.empty().append('<option value="">-- Select Terminal --</option>');
-                        $.each(data, function(i, item) { locDD.append($('<option>', { value: item.id, text: item.name })); });
-                    });
-                } else { locDD.empty().append('<option>-- Select State First --</option>'); }
-            });
+        function initializePage() {
+            if (existingItems && existingItems.length > 0) {
+                existingItems.forEach(function(item) { addItemRow(item); });
+            } else { addItemRow(); }
+            
+            var merchantDropdown = $('#MerchantId');
+            if (merchantDropdown.val()) { merchantDropdown.trigger('change'); }
 
-            $('#MerchantId').on('change', function() {
-                var merchantId = $(this).val();
-                if (merchantId) {
-                    $.getJSON('/MerchantShipment/GetMerchantDetails', { merchantId: merchantId }, function(data) {
-                        if(data) {
-                            $('#senderName').val(data.businessName);
-                            $('#senderPhone').val(data.businessPhoneNumber);
-                            $('#senderEmail').val(data.businessEmail);
-                            $('#senderAddress').val(data.businessAddress);
-                        }
-                    });
-                } else { $('#senderName, #senderPhone, #senderEmail, #senderAddress').val(''); }
-                updatePrice();
-            });
+            var stateDropdown = $('#stateDropdown');
+            if (stateDropdown.val()) { stateDropdown.trigger('change'); }
+            
+            setTimeout(updatePrice, 300);
+        }
+
+        $('#addItemBtn').on('click', function() { addItemRow(); });
+        $('#itemsContainer').on('click', '.remove-item-btn', function() { $(this).closest('.item-row').remove(); updatePrice(); });
+        
+        $('#stateDropdown').on('change', function() {
+            var stateId = $(this).val(); var locDD = $('#locationDropdown');
+            var selectedLocationId = '@(Model.DestinationLocationId)';
+            locDD.empty().append('<option>Loading...</option>');
+            if(stateId) {
+                $.getJSON('/Shipment/GetLocationsByState', { stateId: stateId }, function(data) {
+                    locDD.empty().append('<option value="">-- Select Terminal --</option>');
+                    $.each(data, function(i, item) { locDD.append($('<option>', { value: item.id, text: item.name })); });
+                    if (selectedLocationId && selectedLocationId != '0') { locDD.val(selectedLocationId); }
+                });
+            } else { locDD.empty().append('<option>-- Select State First --</option>'); }
         });
-    </script>
+        
+        $('#MerchantId').on('change', function() {
+            var merchantId = $(this).val();
+            if (merchantId) {
+                $.getJSON('/MerchantShipment/GetMerchantDetails', { merchantId: merchantId }, function(data) {
+                    if(data) {
+                        $('#senderName').val(data.businessName);
+                        $('#senderPhone').val(data.businessPhoneNumber);
+                        $('#senderEmail').val(data.businessEmail);
+                        $('#senderAddress').val(data.businessAddress);
+                    }
+                });
+            } else { $('#senderName, #senderPhone, #senderEmail, #senderAddress').val(''); }
+            updatePrice();
+        });
+
+        initializePage();
+    });
+</script>
 }

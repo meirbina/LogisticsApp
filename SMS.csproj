@@ -87,6 +87,7 @@
     <_ContentIncludedByDefault Remove="Views\Subject\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Views\VehicleMaster\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Views\VoucherHead\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\MarkDistribution\Index.cshtml" />
   </ItemGroup>
 
 </Project>

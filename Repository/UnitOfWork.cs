@@ -21,6 +21,8 @@ namespace SMS.Repository
         public IMerchantRepository MerchantRepository { get; }
         public IWeightPriceRepository WeightPriceRepository { get; }
         public IWalletRepository WalletRepository { get; }
+        public IGenericPackageRepository GenericPackageRepository { get; }
+        
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
@@ -38,6 +40,7 @@ namespace SMS.Repository
             WeightPriceRepository = new WeightPriceRepository(_context);
             WalletRepository = new WalletRepository(_context);
             VehicleRepository = new VehicleRepository(_context);
+            GenericPackageRepository = new GenericPackageRepository(_context);
         }
 
         public async Task<int> CompleteAsync()

@@ -188,10 +188,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9DaGFuZ2VQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/yahgozie/Documents/Projects/Logistics/Views/AllTransactions/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWxsVHJhbnNhY3Rpb25zL0luZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [/Users/yahgozie/Documents/Projects/Logistics/Views/Collection/CollectedHistory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29sbGVjdGlvbi9Db2xsZWN0ZWRIaXN0b3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -240,6 +236,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW1wbG95ZWVzL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/yahgozie/Documents/Projects/Logistics/Views/GenericPackage/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR2VuZXJpY1BhY2thZ2UvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/yahgozie/Documents/Projects/Logistics/Views/GenericShipment/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR2VuZXJpY1NoaXBtZW50L0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/yahgozie/Documents/Projects/Logistics/Views/GenericShipment/Review.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR2VuZXJpY1NoaXBtZW50L1Jldmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/yahgozie/Documents/Projects/Logistics/Views/GenericShipment/Waybill.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR2VuZXJpY1NoaXBtZW50L1dheWJpbGwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/yahgozie/Documents/Projects/Logistics/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -270,10 +282,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/yahgozie/Documents/Projects/Logistics/Views/Manifest/ManifestList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuaWZlc3QvTWFuaWZlc3RMaXN0LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[/Users/yahgozie/Documents/Projects/Logistics/Views/MarkDistribution/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFya0Rpc3RyaWJ1dGlvbi9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/yahgozie/Documents/Projects/Logistics/Views/Merchant/Index.cshtml]

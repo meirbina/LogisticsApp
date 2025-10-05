@@ -22,6 +22,7 @@ namespace SMS.IRepository
         IWeightPriceRepository WeightPriceRepository { get; }
         IWalletRepository WalletRepository { get; }
         IVehicleRepository VehicleRepository { get; }
+        IGenericPackageRepository GenericPackageRepository { get; }
         Task<int> CompleteAsync(); 
     }
 }

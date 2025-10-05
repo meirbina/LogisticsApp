@@ -145,35 +145,6 @@ namespace SMS.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SMS.Models.Accounting", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("AccountName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AccountNumber")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("OpeningBalance")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("Accountings");
-                });
-
             modelBuilder.Entity("SMS.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -207,9 +178,6 @@ namespace SMS.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
 
@@ -241,230 +209,6 @@ namespace SMS.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("SMS.Models.AssignVehicle", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RouteMasterId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("StoppageId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("VehicleIds")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("RouteMasterId");
-
-                    b.HasIndex("StoppageId");
-
-                    b.ToTable("AssignVehicles");
-                });
-
-            modelBuilder.Entity("SMS.Models.Book", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Author")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("BookCategoryId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("CoverImageUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Edition")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Isbn")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Publisher")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("PurchaseDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("TotalStock")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookCategoryId");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("SMS.Models.BookCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("BookCategories");
-                });
-
-            modelBuilder.Entity("SMS.Models.BookIssue", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("FineAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("IssueDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("ReturnDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Role")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("BookIssues");
-                });
-
-            modelBuilder.Entity("SMS.Models.Branch", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(450)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("BranchName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CurrencySymbol")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MobileNo")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SchoolName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Branches");
-                });
-
-            modelBuilder.Entity("SMS.Models.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("Categories");
-                });
-
             modelBuilder.Entity("SMS.Models.Company", b =>
                 {
                     b.Property<int>("Id")
@@ -478,45 +222,6 @@ namespace SMS.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Companies");
-                });
-
-            modelBuilder.Entity("SMS.Models.ControlClass", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ClassNumeric")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("ControlClasses");
-                });
-
-            modelBuilder.Entity("SMS.Models.ControlClassSection", b =>
-                {
-                    b.Property<int>("ControlClassId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SectionId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ControlClassId", "SectionId");
-
-                    b.HasIndex("SectionId");
-
-                    b.ToTable("ControlClassSection");
                 });
 
             modelBuilder.Entity("SMS.Models.Coupon", b =>
@@ -559,91 +264,6 @@ namespace SMS.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CustomerTypes");
-                });
-
-            modelBuilder.Entity("SMS.Models.Department", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("Departments");
-                });
-
-            modelBuilder.Entity("SMS.Models.Deposit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("AttachmentUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PayVia")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Ref")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("VoucherHeadId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("VoucherHeadId");
-
-                    b.ToTable("Deposits");
-                });
-
-            modelBuilder.Entity("SMS.Models.Designation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("Designations");
                 });
 
             modelBuilder.Entity("SMS.Models.Driver", b =>
@@ -703,418 +323,120 @@ namespace SMS.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("SMS.Models.Event", b =>
+            modelBuilder.Entity("SMS.Models.GenericPackage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BranchId")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("Events");
-                });
-
-            modelBuilder.Entity("SMS.Models.EventType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Audience")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("ControlClassId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("EventId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("SectionId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("ControlClassId");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("SectionId");
-
-                    b.ToTable("EventTypes");
-                });
-
-            modelBuilder.Entity("SMS.Models.Exam", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ExamTermId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ExamType")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("ExamTermId");
-
-                    b.ToTable("Exams");
-                });
-
-            modelBuilder.Entity("SMS.Models.ExamHall", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("HallNo")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("NoOfSeats")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("ExamHalls");
-                });
-
-            modelBuilder.Entity("SMS.Models.ExamMarkDistribution", b =>
-                {
-                    b.Property<int>("ExamId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("MarkDistributionId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ExamId", "MarkDistributionId");
-
-                    b.HasIndex("MarkDistributionId");
-
-                    b.ToTable("ExamMarkDistributions");
-                });
-
-            modelBuilder.Entity("SMS.Models.ExamTerm", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("ExamTerms");
-                });
-
-            modelBuilder.Entity("SMS.Models.Expense", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("AttachmentUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PayVia")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Ref")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("VoucherHeadId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("VoucherHeadId");
-
-                    b.ToTable("Expenses");
-                });
-
-            modelBuilder.Entity("SMS.Models.FeesGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("GroupName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("FeesGroups");
-                });
-
-            modelBuilder.Entity("SMS.Models.FeesGroupDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Amount")
+                    b.Property<decimal>("MerchantPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("DueDate")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("FeesGroupId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("FeesTypeId")
-                        .HasColumnType("INTEGER");
+                    b.Property<decimal>("RegularPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FeesGroupId");
-
-                    b.HasIndex("FeesTypeId");
-
-                    b.ToTable("FeesGroupDetails");
+                    b.ToTable("GenericPackages");
                 });
 
-            modelBuilder.Entity("SMS.Models.FeesType", b =>
+            modelBuilder.Entity("SMS.Models.GenericShipment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
+                    b.Property<string>("CreatedBy")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DestinationLocationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsCollected")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("MerchantId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReceiverAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReceiverName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReceiverPhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SenderAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SenderName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SenderPhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ShipmentCollectionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ShipmentType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TotalCost")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("WaybillNumber")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BranchId");
+                    b.HasIndex("DestinationLocationId");
 
-                    b.ToTable("FeesTypes");
+                    b.HasIndex("MerchantId");
+
+                    b.HasIndex("ShipmentCollectionId");
+
+                    b.ToTable("GenericShipments");
                 });
 
-            modelBuilder.Entity("SMS.Models.Grade", b =>
+            modelBuilder.Entity("SMS.Models.GenericShipmentItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BranchId")
+                    b.Property<int>("GenericPackageId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("GradePoint")
-                        .HasColumnType("decimal(5, 2)");
-
-                    b.Property<int>("MaxPercentage")
+                    b.Property<int>("GenericShipmentId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("MinPercentage")
+                    b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BranchId");
+                    b.HasIndex("GenericPackageId");
 
-                    b.ToTable("Grades");
-                });
+                    b.HasIndex("GenericShipmentId");
 
-            modelBuilder.Entity("SMS.Models.HostelCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Remarks")
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("HostelCategories");
-                });
-
-            modelBuilder.Entity("SMS.Models.HostelMaster", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("HostelCategoryId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Remarks")
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("WatchmanName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("HostelCategoryId");
-
-                    b.ToTable("HostelMasters");
-                });
-
-            modelBuilder.Entity("SMS.Models.HostelRoom", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("CostPerBed")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<int>("HostelCategoryId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("NumberOfBeds")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Remarks")
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("HostelCategoryId");
-
-                    b.ToTable("HostelRooms");
+                    b.ToTable("GenericShipmentItems");
                 });
 
             modelBuilder.Entity("SMS.Models.Insurance", b =>
@@ -1251,25 +573,6 @@ namespace SMS.Migrations
                     b.HasIndex("ManifestId");
 
                     b.ToTable("ManifestShipments");
-                });
-
-            modelBuilder.Entity("SMS.Models.MarkDistribution", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("MarkDistributions");
                 });
 
             modelBuilder.Entity("SMS.Models.Merchant", b =>
@@ -1446,136 +749,6 @@ namespace SMS.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PackagingPrices");
-                });
-
-            modelBuilder.Entity("SMS.Models.Parent", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Education")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FatherName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal?>("Income")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MobileNo")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MotherName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Occupation")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ProfilePictureUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId")
-                        .IsUnique();
-
-                    b.ToTable("Parents");
-                });
-
-            modelBuilder.Entity("SMS.Models.RouteMaster", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Remarks")
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("RouteName")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("StartPlace")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("StopPlace")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("RouteMasters");
-                });
-
-            modelBuilder.Entity("SMS.Models.Section", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Capacity")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("ControlClassId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("ControlClassId");
-
-                    b.ToTable("Sections");
-                });
-
-            modelBuilder.Entity("SMS.Models.SectionSubject", b =>
-                {
-                    b.Property<int>("SectionId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SubjectId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("SectionId", "SubjectId");
-
-                    b.HasIndex("SubjectId");
-
-                    b.ToTable("SectionSubjects");
                 });
 
             modelBuilder.Entity("SMS.Models.ServiceType", b =>
@@ -1776,221 +949,6 @@ namespace SMS.Migrations
                     b.ToTable("States");
                 });
 
-            modelBuilder.Entity("SMS.Models.Stoppage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Fare")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("TEXT");
-
-                    b.Property<TimeSpan>("StopTime")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("Stoppages");
-                });
-
-            modelBuilder.Entity("SMS.Models.Student", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("AcademicYear")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("AdmissionDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("BloodGroup")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Caste")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("City")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ControlClassId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("HostelMasterId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("HostelRoomId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MobileNo")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MotherTongue")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ParentId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("PermanentAddress")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PresentAddress")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PreviousSchoolName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PreviousSchoolQualification")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PreviousSchoolRemarks")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ProfilePictureUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("RegisterNo")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Religion")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Roll")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("RouteMasterId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SectionId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("State")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("VehicleMasterId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("ControlClassId");
-
-                    b.HasIndex("HostelMasterId");
-
-                    b.HasIndex("HostelRoomId");
-
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("RouteMasterId");
-
-                    b.HasIndex("SectionId");
-
-                    b.HasIndex("VehicleMasterId");
-
-                    b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("SMS.Models.Subject", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("SubjectAuthor")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SubjectCode")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SubjectName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SubjectType")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("Subjects");
-                });
-
-            modelBuilder.Entity("SMS.Models.TeacherSubjectAssignment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SectionId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SubjectId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SectionId");
-
-                    b.HasIndex("SubjectId");
-
-                    b.HasIndex("EmployeeId", "SectionId", "SubjectId")
-                        .IsUnique();
-
-                    b.ToTable("TeacherSubjectAssignments");
-                });
-
             modelBuilder.Entity("SMS.Models.Vehicle", b =>
                 {
                     b.Property<int>("Id")
@@ -2007,71 +965,6 @@ namespace SMS.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Vehicles");
-                });
-
-            modelBuilder.Entity("SMS.Models.VehicleMaster", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Capacity")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("DriverLicense")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DriverName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DriverPhone")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("InsuranceRenewalDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("VehicleNo")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("VehicleMasters");
-                });
-
-            modelBuilder.Entity("SMS.Models.VoucherHead", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("VoucherHeads");
                 });
 
             modelBuilder.Entity("SMS.Models.Wallet", b =>
@@ -2170,191 +1063,6 @@ namespace SMS.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SMS.Models.Accounting", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.AssignVehicle", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.RouteMaster", "RouteMaster")
-                        .WithMany()
-                        .HasForeignKey("RouteMasterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.Stoppage", "Stoppage")
-                        .WithMany()
-                        .HasForeignKey("StoppageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-
-                    b.Navigation("RouteMaster");
-
-                    b.Navigation("Stoppage");
-                });
-
-            modelBuilder.Entity("SMS.Models.Book", b =>
-                {
-                    b.HasOne("SMS.Models.BookCategory", "BookCategory")
-                        .WithMany()
-                        .HasForeignKey("BookCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BookCategory");
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.BookCategory", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.BookIssue", b =>
-                {
-                    b.HasOne("SMS.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.Category", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.ControlClass", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.ControlClassSection", b =>
-                {
-                    b.HasOne("SMS.Models.ControlClass", "ControlClass")
-                        .WithMany()
-                        .HasForeignKey("ControlClassId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.Section", "Section")
-                        .WithMany()
-                        .HasForeignKey("SectionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("ControlClass");
-
-                    b.Navigation("Section");
-                });
-
-            modelBuilder.Entity("SMS.Models.Department", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.Deposit", b =>
-                {
-                    b.HasOne("SMS.Models.Accounting", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.VoucherHead", "VoucherHead")
-                        .WithMany()
-                        .HasForeignKey("VoucherHeadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-
-                    b.Navigation("Branch");
-
-                    b.Navigation("VoucherHead");
-                });
-
-            modelBuilder.Entity("SMS.Models.Designation", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
             modelBuilder.Entity("SMS.Models.Driver", b =>
                 {
                     b.HasOne("SMS.Models.Company", "Company")
@@ -2383,234 +1091,46 @@ namespace SMS.Migrations
                     b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("SMS.Models.Event", b =>
+            modelBuilder.Entity("SMS.Models.GenericShipment", b =>
                 {
-                    b.HasOne("SMS.Models.Branch", "Branch")
+                    b.HasOne("SMS.Models.Location", "DestinationLocation")
                         .WithMany()
-                        .HasForeignKey("BranchId")
+                        .HasForeignKey("DestinationLocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Branch");
+                    b.HasOne("SMS.Models.Merchant", "Merchant")
+                        .WithMany()
+                        .HasForeignKey("MerchantId");
+
+                    b.HasOne("SMS.Models.ShipmentCollection", "ShipmentCollection")
+                        .WithMany()
+                        .HasForeignKey("ShipmentCollectionId");
+
+                    b.Navigation("DestinationLocation");
+
+                    b.Navigation("Merchant");
+
+                    b.Navigation("ShipmentCollection");
                 });
 
-            modelBuilder.Entity("SMS.Models.EventType", b =>
+            modelBuilder.Entity("SMS.Models.GenericShipmentItem", b =>
                 {
-                    b.HasOne("SMS.Models.Branch", "Branch")
+                    b.HasOne("SMS.Models.GenericPackage", "GenericPackage")
                         .WithMany()
-                        .HasForeignKey("BranchId")
+                        .HasForeignKey("GenericPackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SMS.Models.ControlClass", "ControlClass")
-                        .WithMany()
-                        .HasForeignKey("ControlClassId");
-
-                    b.HasOne("SMS.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
+                    b.HasOne("SMS.Models.GenericShipment", "GenericShipment")
+                        .WithMany("Items")
+                        .HasForeignKey("GenericShipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SMS.Models.Section", "Section")
-                        .WithMany()
-                        .HasForeignKey("SectionId");
+                    b.Navigation("GenericPackage");
 
-                    b.Navigation("Branch");
-
-                    b.Navigation("ControlClass");
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Section");
-                });
-
-            modelBuilder.Entity("SMS.Models.Exam", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.ExamTerm", "ExamTerm")
-                        .WithMany()
-                        .HasForeignKey("ExamTermId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-
-                    b.Navigation("ExamTerm");
-                });
-
-            modelBuilder.Entity("SMS.Models.ExamHall", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.ExamMarkDistribution", b =>
-                {
-                    b.HasOne("SMS.Models.Exam", "Exam")
-                        .WithMany("ExamMarkDistributions")
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.MarkDistribution", "MarkDistribution")
-                        .WithMany("ExamMarkDistributions")
-                        .HasForeignKey("MarkDistributionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Exam");
-
-                    b.Navigation("MarkDistribution");
-                });
-
-            modelBuilder.Entity("SMS.Models.ExamTerm", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.Expense", b =>
-                {
-                    b.HasOne("SMS.Models.Accounting", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.VoucherHead", "VoucherHead")
-                        .WithMany()
-                        .HasForeignKey("VoucherHeadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-
-                    b.Navigation("Branch");
-
-                    b.Navigation("VoucherHead");
-                });
-
-            modelBuilder.Entity("SMS.Models.FeesGroup", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.FeesGroupDetail", b =>
-                {
-                    b.HasOne("SMS.Models.FeesGroup", "FeesGroup")
-                        .WithMany("FeesGroupDetails")
-                        .HasForeignKey("FeesGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.FeesType", "FeesType")
-                        .WithMany()
-                        .HasForeignKey("FeesTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FeesGroup");
-
-                    b.Navigation("FeesType");
-                });
-
-            modelBuilder.Entity("SMS.Models.FeesType", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.Grade", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.HostelCategory", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.HostelMaster", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.HostelCategory", "HostelCategory")
-                        .WithMany()
-                        .HasForeignKey("HostelCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-
-                    b.Navigation("HostelCategory");
-                });
-
-            modelBuilder.Entity("SMS.Models.HostelRoom", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.HostelCategory", "HostelCategory")
-                        .WithMany()
-                        .HasForeignKey("HostelCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-
-                    b.Navigation("HostelCategory");
+                    b.Navigation("GenericShipment");
                 });
 
             modelBuilder.Entity("SMS.Models.Location", b =>
@@ -2666,17 +1186,6 @@ namespace SMS.Migrations
                     b.Navigation("Manifest");
                 });
 
-            modelBuilder.Entity("SMS.Models.MarkDistribution", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
             modelBuilder.Entity("SMS.Models.MerchantShipment", b =>
                 {
                     b.HasOne("SMS.Models.Location", "DestinationLocation")
@@ -2721,60 +1230,6 @@ namespace SMS.Migrations
                     b.Navigation("PackagingPrice");
                 });
 
-            modelBuilder.Entity("SMS.Models.Parent", b =>
-                {
-                    b.HasOne("SMS.Models.ApplicationUser", "ApplicationUser")
-                        .WithOne("Parent")
-                        .HasForeignKey("SMS.Models.Parent", "ApplicationUserId");
-
-                    b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("SMS.Models.RouteMaster", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.Section", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.ControlClass", null)
-                        .WithMany("Sections")
-                        .HasForeignKey("ControlClassId");
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.SectionSubject", b =>
-                {
-                    b.HasOne("SMS.Models.Section", "Section")
-                        .WithMany()
-                        .HasForeignKey("SectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.Subject", "Subject")
-                        .WithMany()
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Section");
-
-                    b.Navigation("Subject");
-                });
-
             modelBuilder.Entity("SMS.Models.Shipment", b =>
                 {
                     b.HasOne("SMS.Models.Location", "DestinationLocation")
@@ -2809,150 +1264,6 @@ namespace SMS.Migrations
                     b.Navigation("PackagingPrice");
                 });
 
-            modelBuilder.Entity("SMS.Models.Stoppage", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.Student", b =>
-                {
-                    b.HasOne("SMS.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.ControlClass", "ControlClass")
-                        .WithMany()
-                        .HasForeignKey("ControlClassId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.HostelMaster", "HostelMaster")
-                        .WithMany()
-                        .HasForeignKey("HostelMasterId");
-
-                    b.HasOne("SMS.Models.HostelRoom", "HostelRoom")
-                        .WithMany()
-                        .HasForeignKey("HostelRoomId");
-
-                    b.HasOne("SMS.Models.Parent", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.RouteMaster", "RouteMaster")
-                        .WithMany()
-                        .HasForeignKey("RouteMasterId");
-
-                    b.HasOne("SMS.Models.Section", "Section")
-                        .WithMany()
-                        .HasForeignKey("SectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.VehicleMaster", "VehicleMaster")
-                        .WithMany()
-                        .HasForeignKey("VehicleMasterId");
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Branch");
-
-                    b.Navigation("Category");
-
-                    b.Navigation("ControlClass");
-
-                    b.Navigation("HostelMaster");
-
-                    b.Navigation("HostelRoom");
-
-                    b.Navigation("Parent");
-
-                    b.Navigation("RouteMaster");
-
-                    b.Navigation("Section");
-
-                    b.Navigation("VehicleMaster");
-                });
-
-            modelBuilder.Entity("SMS.Models.Subject", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.TeacherSubjectAssignment", b =>
-                {
-                    b.HasOne("SMS.Models.Employee", "Teacher")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.Section", "Section")
-                        .WithMany()
-                        .HasForeignKey("SectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SMS.Models.Subject", "Subject")
-                        .WithMany()
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Section");
-
-                    b.Navigation("Subject");
-
-                    b.Navigation("Teacher");
-                });
-
-            modelBuilder.Entity("SMS.Models.VehicleMaster", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SMS.Models.VoucherHead", b =>
-                {
-                    b.HasOne("SMS.Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
             modelBuilder.Entity("SMS.Models.Wallet", b =>
                 {
                     b.HasOne("SMS.Models.Merchant", "Merchant")
@@ -2975,34 +1286,14 @@ namespace SMS.Migrations
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("SMS.Models.ApplicationUser", b =>
+            modelBuilder.Entity("SMS.Models.GenericShipment", b =>
                 {
-                    b.Navigation("Parent");
-                });
-
-            modelBuilder.Entity("SMS.Models.ControlClass", b =>
-                {
-                    b.Navigation("Sections");
-                });
-
-            modelBuilder.Entity("SMS.Models.Exam", b =>
-                {
-                    b.Navigation("ExamMarkDistributions");
-                });
-
-            modelBuilder.Entity("SMS.Models.FeesGroup", b =>
-                {
-                    b.Navigation("FeesGroupDetails");
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("SMS.Models.Manifest", b =>
                 {
                     b.Navigation("ManifestShipments");
-                });
-
-            modelBuilder.Entity("SMS.Models.MarkDistribution", b =>
-                {
-                    b.Navigation("ExamMarkDistributions");
                 });
 
             modelBuilder.Entity("SMS.Models.Merchant", b =>
