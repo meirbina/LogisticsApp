@@ -300,6 +300,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWVyY2hhbnRTaGlwbWVudC9XYXliaWxsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/yahgozie/Documents/Projects/Logistics/Views/Operations/CancelledShipmentsLog.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvT3BlcmF0aW9ucy9DYW5jZWxsZWRTaGlwbWVudHNMb2cuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/yahgozie/Documents/Projects/Logistics/Views/Operations/CancelShipment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvT3BlcmF0aW9ucy9DYW5jZWxTaGlwbWVudC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/yahgozie/Documents/Projects/Logistics/Views/Operations/ModifyDestination.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvT3BlcmF0aW9ucy9Nb2RpZnlEZXN0aW5hdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/yahgozie/Documents/Projects/Logistics/Views/PackagingPrice/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGFja2FnaW5nUHJpY2UvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -386,6 +398,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/yahgozie/Documents/Projects/Logistics/Views/Terminal/Shipments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVybWluYWwvU2hpcG1lbnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/yahgozie/Documents/Projects/Logistics/Views/Tracking/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVHJhY2tpbmcvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/yahgozie/Documents/Projects/Logistics/Views/Vehicle/Index.cshtml]

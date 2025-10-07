@@ -32,6 +32,15 @@ public class Shipment
     public string ReceivedBy { get; set; } // Employee Email
 
     public bool IsCollected { get; set; } = false;
+    public bool IsCancelled { get; set; } = false;
+    public string CancellationReason { get; set; }
+    public string CancelledBy { get; set; } // Employee Email
+    public DateTime? CancellationDate { get; set; }
+
+    public bool IsModified { get; set; } = false;
+    public string ModificationReason { get; set; }
+    public string ModifiedBy { get; set; } // Employee Email
+    public DateTime? ModificationDate { get; set; }
 
     // We will link to a separate collection details record
     public int? ShipmentCollectionId { get; set; }

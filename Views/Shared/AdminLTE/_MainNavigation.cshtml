@@ -58,6 +58,10 @@
                         <li class="nav-item"><a asp-controller="Collection" asp-action="ReleasedShipments" class="nav-link @Html.IsActive("Collection", "ReleasedShipments")"><i class="far fa-circle nav-icon"></i><p>Release Shipments</p></a></li>
                         <li class="nav-item"><a asp-controller="Collection" asp-action="CollectedHistory" class="nav-link @Html.IsActive("Collection", "CollectedHistory")"><i class="far fa-circle nav-icon"></i><p>Collection History</p></a></li>
                         <li class="nav-item"><a asp-controller="Terminal" asp-action="Shipments" class="nav-link @Html.IsActive("Terminal", "Shipments")"><i class="far fa-circle nav-icon"></i><p>Terminal Shipments</p></a></li>
+                        <li class="nav-item"><a asp-controller="Tracking" asp-action="Index" class="nav-link @Html.IsActive("Tracking", "Index")"><i class="far fa-circle nav-icon"></i><p>Track Shipments</p></a></li>
+                        <li class="nav-item"><a asp-controller="Operations" asp-action="CancelShipment" class="nav-link @Html.IsActive("Operations", "CancelShipment")"><i class="far fa-circle nav-icon"></i><p>Cancel Shipments</p></a></li>
+                        <li class="nav-item"><a asp-controller="Operations" asp-action="CancelledShipmentsLog" class="nav-link @Html.IsActive("Operations", "CancelledShipmentsLog")"><i class="far fa-circle nav-icon"></i><p>Cancelled Shipments Logs</p></a></li>
+                        <li class="nav-item"><a asp-controller="Operations" asp-action="ModifyDestination" class="nav-link @Html.IsActive("Operations", "ModifyDestination")"><i class="far fa-circle nav-icon"></i><p>Modify Shipment Destination</p></a></li>
                     </ul>
                 </li>
                 <!-- Reports Group -->

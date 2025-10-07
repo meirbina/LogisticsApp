@@ -353,6 +353,15 @@ namespace SMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime?>("CancellationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CancellationReason")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CancelledBy")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("TEXT");
 
@@ -362,13 +371,34 @@ namespace SMS.Migrations
                     b.Property<int>("DestinationLocationId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsCancelled")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsCollected")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsModified")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("MerchantId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModificationReason")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("PaymentMethod")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReceivedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ReceivedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ReceiverAddress")
@@ -616,6 +646,15 @@ namespace SMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime?>("CancellationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CancellationReason")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CancelledBy")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("TEXT");
 
@@ -634,11 +673,26 @@ namespace SMS.Migrations
                     b.Property<int?>("InsuranceId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsCancelled")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsCollected")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsModified")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("MerchantId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModificationReason")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("PackagingCost")
                         .HasColumnType("TEXT");
@@ -778,6 +832,15 @@ namespace SMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime?>("CancellationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CancellationReason")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CancelledBy")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("TEXT");
 
@@ -796,8 +859,23 @@ namespace SMS.Migrations
                     b.Property<int?>("InsuranceId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsCancelled")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsCollected")
                         .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsModified")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModificationReason")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("PackagingCost")
                         .HasColumnType("TEXT");
