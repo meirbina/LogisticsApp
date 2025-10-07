@@ -1,0 +1,96 @@
+@* @model IEnumerable<dynamic> *@
+@* @{ *@
+@*     ViewData["Title"] = "Cancellation Log"; *@
+@*     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml"; *@
+@* } *@
+@* *@
+@* <div class="card shadow mb-4"> *@
+@*     <div class="card-header"><h6 class="m-0 font-weight-bold text-primary">Cancelled Shipments Log</h6></div> *@
+@*     <div class="card-body"> *@
+@*         <table class="table table-bordered" id="logTable"> *@
+@*             <thead><tr><th>Waybill #</th><th>Date Cancelled</th><th>Cancelled By</th><th>Reason</th></tr></thead> *@
+@*             <tbody> *@
+@*             @foreach (var item in Model) { *@
+@*                 <tr> *@
+@*                     <td>@item.WaybillNumber</td> *@
+@*                     <td>@item.CancellationDate?.ToString("yyyy-MM-dd HH:mm")</td> *@
+@*                     <td>@item.CancelledBy</td> *@
+@*                     <td>@item.CancellationReason</td> *@
+@*                 </tr> *@
+@*             } *@
+@*             </tbody> *@
+@*         </table> *@
+@*     </div> *@
+@* </div> *@
+@* @section Scripts { <script>$(function(){ $('#logTable').DataTable({"order": [[1, "desc"]]}); });</script> } *@
+
+
+
+
+@model SMS.Models.ViewModels.CancelledLogVM
+@{ 
+    ViewData["Title"] = "Cancellation Log";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header"><h6 class="m-0 font-weight-bold text-primary">Cancelled Shipments Log</h6></div>
+    
+    <!-- Date Filter Form -->
+    <div class="card-body border-bottom">
+        <form asp-action="CancelledShipmentsLog" method="get">
+            <div class="row align-items-end">
+                <div class="form-group col-md-4">
+                    <label asp-for="StartDate"></label>
+                    <input asp-for="StartDate" class="form-control" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="EndDate"></label>
+                    <input asp-for="EndDate" class="form-control" />
+                </div>
+                <div class="form-group col-md-4">
+                    <button type="submit" class="btn btn-primary">Filter Log</button>
+                    <a asp-action="CancelledShipmentsLog" class="btn btn-secondary">Today's Log</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="card-body">
+        <table class="table table-bordered" id="logTable">
+            <thead>
+                <tr>
+                    <th>Waybill #</th>
+                    <th>Date Cancelled</th>
+                    <th>Cancelled By</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CancelledShipments) {
+                    <tr>
+                        <td>@item.WaybillNumber</td>
+                        <td>@item.CancellationDate?.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@item.CancelledBy</td>
+                        <td>@item.CancellationReason</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    $(function(){ 
+        // Initialize DataTable with export buttons
+        $('#logTable').DataTable({
+            "order": [[1, "desc"]], // Order by date descending
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        }); 
+    });
+</script> 
+}

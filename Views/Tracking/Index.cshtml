@@ -1,0 +1,56 @@
+@model SMS.Models.ViewModels.TrackShipmentVM
+@{
+    ViewData["Title"] = "Track Shipment";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header"><h6 class="m-0 font-weight-bold text-primary">Find Shipment</h6></div>
+    <div class="card-body">
+        <form asp-action="Search" method="get">
+            <div class="form-group">
+                <label asp-for="SearchTerm">Enter Waybill Number, Sender, or Receiver Phone Number</label>
+                <div class="input-group">
+                    <input asp-for="SearchTerm" class="form-control" placeholder="e.g., EN123456UM or 08012345678" />
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.Results != null)
+{
+    <div class="card shadow mb-4">
+        <div class="card-header"><h6 class="m-0 font-weight-bold text-primary">Search Results</h6></div>
+        <div class="card-body">
+            @if (!Model.Results.Any())
+            {
+                <p>No shipments found for "@Model.SearchTerm".</p>
+            }
+            else
+            {
+                <table class="table table-bordered">
+                    <thead><tr><th>Waybill #</th><th>Sender #</th><th>Receiver #</th><th>Weight (kg)</th><th>Amount</th><th>Status</th><th>Date</th><th>Payment</th></tr></thead>
+                    <tbody>
+                    @foreach (var item in Model.Results)
+                    {
+                        <tr>
+                            <td>@item.WaybillNumber</td>
+                            <td>@item.SenderPhoneNumber</td>
+                            <td>@item.ReceiverPhoneNumber</td>
+                            <td>@(item.TotalWeight > 0 ? item.TotalWeight.ToString("N2") : "N/A")</td>
+                            <td>@item.AmountPaid.ToString("C")</td>
+                            <td><span class="badge badge-info">@item.Status</span></td>
+                            <td>@item.DateCreated.ToString("yyyy-MM-dd")</td>
+                            <td>@item.PaymentMethod</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+}

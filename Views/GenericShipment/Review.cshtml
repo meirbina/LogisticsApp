@@ -1,0 +1,93 @@
+@model SMS.Models.ViewModels.CreateGenericShipmentVM
+@{
+    ViewData["Title"] = "Review Generic Shipment"; 
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h3>Please Review Generic Shipment Details</h3>
+        <div class="card mb-3"><div class="card-header">Sender</div>
+            <div class="card-body">
+                @if(Model.ShipmentType == "Merchant") {
+                    <strong>@Model.MerchantList.FirstOrDefault(m => m.Value == Model.MerchantId.ToString())?.Text</strong>
+                } else {
+                    @:@Model.SenderName, @Model.SenderPhoneNumber, @Model.SenderAddress
+                }
+            </div>
+        </div>
+        <div class="card mb-3"><div class="card-header">Receiver</div><div class="card-body">@Model.ReceiverName, @Model.ReceiverPhoneNumber, @Model.ReceiverAddress</div></div>
+        <div class="card mb-3"><div class="card-header">Items</div>
+            <ul class="list-group list-group-flush">
+                @foreach(var item in Model.Items) {
+                    <li class="list-group-item">@Model.GenericPackageList.FirstOrDefault(p => p.Value == item.GenericPackageId.ToString())?.Text (Qty: @item.Quantity)</li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h4>Final Price Details</h4>
+        <dl class="row">
+            <dt class="col-7">Discount:</dt><dd class="col-5 text-right text-success" id="discountAmount">(0.00)</dd>
+            <dt class="col-7 h4">TOTAL:</dt><dd class="col-5 h4 text-right" id="finalTotal">@Model.PriceDetails.TotalToPay.ToString("N2")</dd>
+        </dl>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Coupon Code" id="couponCode">
+            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" id="applyCouponBtn">Apply</button></div>
+        </div>
+        <div id="couponMessage" class="mb-2"></div>
+
+        <form id="confirmShipmentForm" asp-controller="GenericShipment" asp-action="ConfirmShipment" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="couponCode" id="appliedCouponCode" />
+            <button type="button" id="confirmAndGenerateBtn" class="btn btn-success btn-lg btn-block">Confirm & Generate Waybill</button>
+            <a asp-action="EditShipment" asp-controller="GenericShipment" class="btn btn-secondary btn-block mt-2">Back to Edit</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function() {
+            var originalTotal = @Model.PriceDetails.TotalToPay;
+            $('#applyCouponBtn').on('click', function() {
+                var code = $('#couponCode').val(); if (!code) return;
+                $.post('@Url.Action("ApplyCoupon", "Shipment")', { couponCode: code, currentTotal: originalTotal }, function(response) {
+                    var msgDiv = $('#couponMessage');
+                    if(response.success) {
+                        $('#discountAmount').text('(' + response.discount.toFixed(2) + ')');
+                        $('#finalTotal').text(response.newTotal.toFixed(2));
+                        $('#appliedCouponCode').val(code);
+                        msgDiv.html('<div class="alert alert-success p-2">' + response.message + '</div>');
+                    } else {
+                        $('#discountAmount').text('(0.00)');
+                        $('#finalTotal').text(originalTotal.toFixed(2));
+                        $('#appliedCouponCode').val('');
+                        msgDiv.html('<div class="alert alert-danger p-2">' + response.message + '</div>');
+                    }
+                });
+            });
+
+            $('#confirmAndGenerateBtn').on('click', function(e) {
+                e.preventDefault(); var form = $('#confirmShipmentForm'); var button = $(this);
+                button.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Generating...');
+                $.ajax({
+                    type: 'POST', url: form.attr('action'), data: form.serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            window.open(response.redirectUrl, '_blank');
+                            window.location.href = '@Url.Action("Create", "GenericShipment")';
+                        } else {
+                            alert('Error: ' + response.message);
+                            button.prop('disabled', false).html('Confirm & Generate Waybill');
+                        }
+                    },
+                    error: function() {
+                        alert('An unexpected error occurred. Please try again.');
+                        button.prop('disabled', false).html('Confirm & Generate Waybill');
+                    }
+                });
+            });
+        });
+    </script>
+}

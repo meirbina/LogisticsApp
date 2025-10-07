@@ -1,0 +1,168 @@
+@using Newtonsoft.Json
+@model SMS.Models.ViewModels.CreateGenericShipmentVM
+@{
+    ViewData["Title"] = "Create Generic Shipment";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+    var packageListJson = Html.Raw(JsonConvert.SerializeObject(Model.GenericPackageList));
+    var existingItemsJson = Html.Raw(JsonConvert.SerializeObject(Model.Items));
+}
+
+<form asp-action="ReviewShipment" method="post" id="generic-shipment-form">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-3"><div class="card-header">Customer Type</div>
+                <div class="card-body"><div class="form-group">
+                        <label asp-for="ShipmentType"></label>
+                        <select asp-for="ShipmentType" class="form-control" id="customerTypeDropdown"><option value="Regular">Regular</option><option value="Merchant">Merchant</option></select>
+                    </div></div></div>
+
+            <div class="card mb-3" id="sender-section">
+                <div class="card-header">Sender Information</div>
+                <div class="card-body" id="regular-sender-fields"><div class="row">
+                        <div class="form-group col-md-4"><label asp-for="SenderName"></label><input asp-for="SenderName" class="form-control" /></div>
+                        <div class="form-group col-md-4"><label asp-for="SenderPhoneNumber"></label><input asp-for="SenderPhoneNumber" class="form-control" /></div>
+                        <div class="form-group col-md-4"><label asp-for="SenderAddress"></label><input asp-for="SenderAddress" class="form-control" /></div>
+                    </div></div>
+                <div class="card-body" id="merchant-sender-fields" style="display: none;">
+                    <div class="form-group"><label asp-for="MerchantId"></label><select asp-for="MerchantId" asp-items="Model.MerchantList" class="form-control"><option value="">-- Select Merchant --</option></select></div>
+                </div>
+            </div>
+
+            <div class="card mb-3"><div class="card-header">Receiver Information</div>
+                <div class="card-body row">
+                    <div class="form-group col-md-4"><label asp-for="ReceiverName"></label><input asp-for="ReceiverName" class="form-control" /></div>
+                    <div class="form-group col-md-4"><label asp-for="ReceiverPhoneNumber"></label><input asp-for="ReceiverPhoneNumber" class="form-control" /></div>
+                    <div class="form-group col-md-4"><label asp-for="ReceiverAddress"></label><input asp-for="ReceiverAddress" class="form-control" /></div>
+                    <div class="form-group col-12"><label asp-for="DestinationLocationId"></label><select asp-for="DestinationLocationId" asp-items="Model.LocationList" class="form-control"><option value="">-- Select Destination --</option></select></div>
+                </div></div>
+
+            <div class="card mb-3"><div class="card-header">Financial Information</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label asp-for="PaymentMethod"></label>
+                        <select asp-for="PaymentMethod" class="form-control">
+                            <option value="">-- Select Payment Method --</option>
+                            <option>POS</option><option>Cash</option><option>Transfer</option>
+                        </select>
+                    </div>
+                </div></div>
+
+            <div class="card mb-3"><div class="card-header">Generic Package Items</div>
+                <div class="card-body"><div id="itemsContainer"></div><button type="button" id="addItemBtn" class="btn btn-info mt-2">Add Package</button></div></div>
+
+            <button type="submit" class="btn btn-primary btn-lg">Review Shipment</button>
+        </div>
+        <div class="col-md-4">
+            <div class="card sticky-top">
+                <div class="card-header"><h4>Live Price Summary</h4></div>
+                <div class="card-body"><dl class="row"><dt class="col-7 h5">TOTAL:</dt><dd class="col-5 text-right h5" id="summaryTotal">0.00</dd></dl></div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $(function() {
+            const packageList = @packageListJson;
+            const existingItems = @existingItemsJson;
+
+            function updatePrice() {
+                var formData = $('#generic-shipment-form').serializeArray();
+                var jsonData = { Items: [] };
+                var itemsMap = {};
+
+                $.each(formData, function(i, field){
+                    var match = field.name.match(/Items\[(\d+)\]\.(.*)/);
+                    if (match) {
+                        var index = match[1], prop = match[2];
+                        if (!itemsMap[index]) itemsMap[index] = {};
+                        itemsMap[index][prop] = field.value || 0;
+                    } else {
+                        jsonData[field.name] = field.value;
+                    }
+                });
+                for (var key in itemsMap) { jsonData.Items.push(itemsMap[key]); }
+
+                $.ajax({
+                    url: '@Url.Action("CalculatePrice", "GenericShipment")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(jsonData),
+                    success: function(response) {
+                        if (response.success) {
+                            $('#summaryTotal').text(parseFloat(response.price.totalToPay).toFixed(2));
+                        }
+                    }
+                });
+            }
+
+            var debounceTimer;
+            $('#generic-shipment-form').on('change keyup', 'input, select', function() {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(updatePrice, 300);
+            });
+
+            let itemIndex = 0;
+            function addItemRow(itemData = null) {
+                let packageOptions = '<option value="">-- Select Package --</option>';
+                packageList.forEach(function(item) { packageOptions += `<option value="${item.Value}">${item.Text}</option>`; });
+                var html = `
+            <div class="row item-row align-items-end mb-2">
+                <div class="form-group col-7"><label>Package Type</label><select name="Items[${itemIndex}].GenericPackageId" class="form-control" required>${packageOptions}</select></div>
+                <div class="form-group col-3"><label>Quantity</label><input name="Items[${itemIndex}].Quantity" type="number" class="form-control" value="1" min="1" required/></div>
+                <div class="col-2"><button type="button" class="btn btn-danger remove-item-btn">X</button></div>
+            </div>`;
+                var newRow = $(html);
+                if (itemData) {
+                    newRow.find(`[name="Items[${itemIndex}].GenericPackageId"]`).val(itemData.GenericPackageId);
+                    newRow.find(`[name="Items[${itemIndex}].Quantity"]`).val(itemData.Quantity);
+                }
+                $('#itemsContainer').append(newRow); itemIndex++;
+            }
+
+            function initializePage() {
+                if (existingItems && existingItems.length > 0) {
+                    existingItems.forEach(function(item) { addItemRow(item); });
+                } else {
+                    $('#addItemBtn').trigger('click');
+                }
+                $('#customerTypeDropdown').trigger('change');
+                setTimeout(updatePrice, 300);
+            }
+
+            $('#addItemBtn').on('click', function() { addItemRow(); });
+            $('#itemsContainer').on('click', '.remove-item-btn', function() {
+                $(this).closest('.row').remove();
+                updatePrice();
+            });
+
+            $('#customerTypeDropdown').on('change', function() {
+                var type = $(this).val();
+                var regularFields = $('#regular-sender-fields');
+                var merchantFields = $('#merchant-sender-fields');
+
+                if (type === 'Merchant') {
+                    // Hide regular, make its fields not required, and disable them
+                    regularFields.hide().find('input').prop('required', false).prop('disabled', true).val('');
+
+                    // Show merchant, make its fields required, and enable them
+                    merchantFields.show().find('select').prop('required', true).prop('disabled', false);
+                } else { // Regular
+                    // Show regular, make its fields required, and enable them
+                    regularFields.show().find('input').prop('required', true).prop('disabled', false);
+
+                    // Hide merchant, make its fields not required, disable it, and clear its value
+                    merchantFields.hide().find('select').prop('required', false).prop('disabled', true).val('');
+                }
+                // Always update the price after switching types
+                updatePrice();
+            });
+
+            initializePage();
+        });
+    </script>
+}

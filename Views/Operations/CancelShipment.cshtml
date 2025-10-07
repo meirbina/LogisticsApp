@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Cancel Shipment";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header"><h6 class="m-0 font-weight-bold text-primary">Cancel a Shipment</h6></div>
+    <div class="card-body">
+        <form asp-action="CancelShipment" method="post">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label>Waybill Number</label>
+                <input name="waybillNumber" class="form-control" placeholder="Enter the waybill number to cancel" required />
+            </div>
+            <div class="form-group">
+                <label>Reason for Cancellation</label>
+                <textarea name="reason" class="form-control" rows="3" placeholder="Provide a clear reason..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-danger">Confirm Cancellation</button>
+        </form>
+    </div>
+</div>
