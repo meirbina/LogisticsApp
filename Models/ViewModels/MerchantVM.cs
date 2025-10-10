@@ -16,7 +16,7 @@ namespace SMS.Models.ViewModels
     // This class will hold all the properties for the form
     public class MerchantFormModel
     {
-        public int Id { get; set; } // 0 for Create, > 0 for Edit
+        public int Id { get; set; }
         [Required] public string BusinessName { get; set; }
         [Required] public string OwnerFirstName { get; set; }
         [Required] public string OwnerLastName { get; set; }
