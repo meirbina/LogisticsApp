@@ -1,33 +1,106 @@
-﻿ <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+﻿@* <nav class="main-header navbar navbar-expand navbar-white navbar-light"> *@
+@*     <!-- Left navbar links --> *@
+@*     <ul class="navbar-nav"> *@
+@*         <li class="nav-item"> *@
+@*             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a> *@
+@*         </li> *@
+@*     </ul> *@
+@* *@
+@*     <!-- Right navbar links --> *@
+@*     <ul class="navbar-nav ml-auto"> *@
+@* *@
+@*         <!-- Notifications Dropdown Menu --> *@
+@*         <li class="nav-item dropdown"> *@
+@*             <a class="nav-link" data-toggle="dropdown" href="#"> *@
+@*                 <span>More</span> *@
+@*             </a> *@
+@*             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"> *@
+@*                 <div class="dropdown-divider"></div> *@
+@*                 <a href="#" class="dropdown-item"> *@
+@*                     <p>About Us</p> *@
+@*                 </a> *@
+@*                 <div class="dropdown-divider"></div> *@
+@*                 <a href="#" class="dropdown-item"> *@
+@*                     <p>Services</p> *@
+@*                 </a> *@
+@*                 <div class="dropdown-divider"></div> *@
+@*                 <a href="#" class="dropdown-item"> *@
+@*                     <p>FAQ</p> *@
+@*                 </a> *@
+@*             </div> *@
+@*         </li> *@
+@*     </ul> *@
+@* </nav> *@
+
+
+
+
+
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.EntityFrameworkCore
+@using SMS.Models 
+@using SMS.DataContext
+
+@* Inject the services needed to get user information *@
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject AppDbContext _context
+
+<!-- Navbar -->
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+        <!-- User Dropdown Menu -->
+        @if (SignInManager.IsSignedIn(User))
+        {
+            // Get the full ApplicationUser object for the currently logged-in user
+            var user = await UserManager.GetUserAsync(User);
+            // Find the associated employee record to get the first/last name
+            var employee = await _context.Employees.AsNoTracking().FirstOrDefaultAsync(e => e.ApplicationUserId == user.Id);
+            // Use the employee's name if available, otherwise default to their email
+            var userName = (employee != null) ? $"{employee.FirstName} {employee.LastName}" : user.Email;
 
-      <!-- Notifications Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <span>More</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <p>About Us</p> 
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <p>Services</p> 
-          </a>
-          <div class="dropdown-divider"></div>
-         <a href="#" class="dropdown-item">
-            <p>FAQ</p> 
-          </a>
-        </div>
-      </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    @user.Email <i class="fas fa-caret-down ml-1"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-item dropdown-header">Signed in as @userName</span>
+                    <div class="dropdown-divider"></div>
+                    <a asp-controller="Account" asp-action="Profile" class="dropdown-item">
+                        <i class="fas fa-user-cog mr-2"></i> My Profile
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a asp-controller="Account" asp-action="ChangePassword" class="dropdown-item">
+                        <i class="fas fa-key mr-2"></i> Change Password
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    
+                    <!-- Logout Form -->
+                    <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                         @Html.AntiForgeryToken()
+                        <button type="submit" class="dropdown-item" style="border:none; width:100%; text-align:left;">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </button>
+                    </form>
+                </div>
+            </li>
+        }
+        else
+        {
+            // Show login link if the user is not signed in
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+            </li>
+        }
     </ul>
-  </nav>
+</nav>
+<!-- /.navbar -->

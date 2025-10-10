@@ -177,7 +177,17 @@
 
             <div class="card mb-3"><div class="card-header">Financial Information</div>
             <div class="card-body row">
-                <div class="form-group col-md-4"><label asp-for="PaymentMethod"></label><select asp-for="PaymentMethod" class="form-control"><option>POS</option><option>Cash</option><option>Transfer</option></select></div>
+                @* <div class="form-group col-md-4"><label asp-for="PaymentMethod"></label><select asp-for="PaymentMethod" class="form-control"><option>POS</option><option>Cash</option><option>Transfer</option></select></div> *@
+                <div class="form-group col-md-4">
+                    <label asp-for="PaymentMethod"></label>
+                    <!-- THE FIX: Add a default, non-selectable option -->
+                    <select asp-for="PaymentMethod" class="form-control">
+                        <option value="">-- Select Payment Method --</option>
+                        <option>POS</option>
+                        <option>Cash</option>
+                        <option>Transfer</option>
+                    </select>
+                </div>
                 <div class="form-group col-md-4"><label asp-for="DeclaredValue"></label><input asp-for="DeclaredValue" type="number" step="0.01" class="form-control" value="0"/></div>
                 <div class="form-group col-md-4"><label asp-for="InsuranceId"></label><select asp-for="InsuranceId" asp-items="Model.InsuranceOptions" class="form-control"><option value="">-- No Insurance --</option></select></div>
             </div></div>

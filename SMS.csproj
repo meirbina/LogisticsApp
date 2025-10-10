@@ -25,9 +25,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\images\parents\" />
-  </ItemGroup>
-  <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\AssignVehicle\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Views\BookCategories\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Views\BookIssue\Index.cshtml" />
@@ -88,6 +85,13 @@
     <_ContentIncludedByDefault Remove="Views\VehicleMaster\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Views\VoucherHead\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Views\MarkDistribution\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\employees\105428f8-ec66-48f7-9baa-e0dc88b38e83_Screenshot 2025-07-18 at 3.07.47 PM.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\employees\4bb09532-0f32-4544-8a60-304fbd3f3c11_Screenshot 2025-07-18 at 3.07.33 PM.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\employees\7f4f2ca1-dcfa-4380-ace1-47738b87ea13_Screenshot 2025-07-28 at 5.10.06 PM.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\employees\d84b1858-843b-4408-a425-05c7259132bd_Screenshot 2025-07-18 at 3.07.33 PM.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\employees\ddf9abd2-59de-40d5-98c0-92575f791cda_men.jpeg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\employees\e2f32da6-5fec-4687-b591-615ed2cce5d3_Screenshot 2025-07-26 at 4.09.30 PM.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\employees\f6f992d9-a197-4352-a41e-c20f045320b1_Screenshot 2025-07-28 at 5.10.06 PM.png" />
   </ItemGroup>
 
 </Project>

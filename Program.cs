@@ -5,6 +5,7 @@ using SMS.Repository;
 using Microsoft.AspNetCore.Identity;
 using SMS.Data;
 using SMS.Models;
+using SMS.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,14 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders()
     .AddDefaultUI();
+
+
+// 1. Configure IOptions to read the TermiiSettings section from appsettings.json
+builder.Services.Configure<TermiiSettings>(builder.Configuration.GetSection("TermiiSettings"));
+// 2. Add IHttpClientFactory to make HTTP requests efficiently
+builder.Services.AddHttpClient();
+// 3. Register your new SMS service for dependency injection
+builder.Services.AddScoped<ISmsService, SmsService>();
 
 // Configure cookie settings to redirect to your new login page
 builder.Services.ConfigureApplicationCookie(options =>

@@ -1,9 +1,9 @@
 @model SMS.Models.ViewModels.LocationVM
 
 @{
-ViewData["Title"] = "Locations";
-Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml"; // Assumes you're using this layout
-int sl = 1;
+    ViewData["Title"] = "Locations";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+    int sl = 1;
 }
 
 <div class="card card-primary card-tabs">
@@ -20,9 +20,6 @@ int sl = 1;
     <div class="card-body">
         <div class="tab-content" id="custom-tabs-one-tabContent">
 
-            <!-- ==================================================================================== -->
-            <!--                                     LIST PANE                                        -->
-            <!-- ==================================================================================== -->
             <div class="tab-pane fade show active" id="list-pane" role="tabpanel" aria-labelledby="list-tab">
                 <table id="locationTable" class="table table-bordered table-striped">
                     <thead>
@@ -30,6 +27,7 @@ int sl = 1;
                         <th>Sl</th>
                         <th>Location Name</th>
                         <th>State</th>
+                        <th>Address</th>
                         <th>Type</th>
                         <th>Code</th>
                         <th>Contact Person</th>
@@ -43,6 +41,7 @@ int sl = 1;
                             <td>@(sl++)</td>
                             <td>@item.Name</td>
                             <td>@item.State.Name</td>
+                            <td>@item.LocationAddress</td>
                             <td>@item.LocationType</td>
                             <td>@item.LocationCode</td>
                             <td>@item.ContactPersonName</td>
@@ -58,15 +57,11 @@ int sl = 1;
                 </table>
             </div>
 
-            <!-- ==================================================================================== -->
-            <!--                                    CREATE PANE                                       -->
-            <!-- ==================================================================================== -->
             <div class="tab-pane fade" id="create-pane" role="tabpanel" aria-labelledby="create-tab">
                 <form asp-action="Create" method="post">
                     @Html.AntiForgeryToken()
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
-                    <!-- Form Fields directly embedded -->
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -119,10 +114,6 @@ int sl = 1;
     </div>
 </div>
 
-<!-- ==================================================================================== -->
-<!--                                        MODALS                                        -->
-<!-- ==================================================================================== -->
-
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
@@ -135,8 +126,6 @@ int sl = 1;
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="editId" name="Id" />
-
-                    <!-- Form Fields directly embedded for the Edit Modal -->
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -209,50 +198,41 @@ int sl = 1;
 </div>
 
 @section Scripts {
-<script>
-    $(function () {
-        // Initialize DataTable for sorting, searching, etc.
-        $("#locationTable").DataTable({ "responsive": true, "lengthChange": false, "autoWidth": false });
+    <script>
+        $(function () {
+            $("#locationTable").DataTable({ "responsive": true, "lengthChange": false, "autoWidth": false });
 
-        // Handle Edit Button Click
-        $('.editButton').on('click', function () {
-            var id = $(this).data('id');
-            // AJAX call to get location data from the controller
-            $.getJSON('/Location/GetLocation/' + id, function (data) {
-                // Populate the edit modal's form fields with the fetched data
-                $('#editId').val(data.id);
-                $('#editName').val(data.name);
-                $('#editStateId').val(data.stateId);
-                $('#editLocationType').val(data.locationType);
-                $('#editLocationCode').val(data.locationCode);
-                $('#editLocationAddress').val(data.locationAddress);
-                $('#editContactPersonName').val(data.contactPersonName);
-                $('#editContactPersonPhone').val(data.contactPersonPhone);
-                $('#editIsCommissioned').prop('checked', data.isCommissioned);
+            $('.editButton').on('click', function () {
+                var id = $(this).data('id');
+                $.getJSON('/Location/GetLocation/' + id, function (data) {
+                    $('#editId').val(data.id);
+                    $('#editName').val(data.name);
+                    $('#editStateId').val(data.stateId);
+                    $('#editLocationType').val(data.locationType);
+                    $('#editLocationCode').val(data.locationCode);
+                    $('#editLocationAddress').val(data.locationAddress);
+                    $('#editContactPersonName').val(data.contactPersonName);
+                    $('#editContactPersonPhone').val(data.contactPersonPhone);
+                    $('#editIsCommissioned').prop('checked', data.isCommissioned);
+                });
             });
-        });
 
-        // Handle Delete Button Click
-        $('.deleteButton').on('click', function () {
-            // Set the hidden ID in the delete form
-            $('#deleteId').val($(this).data('id'));
-        });
+            $('.deleteButton').on('click', function () {
+                $('#deleteId').val($(this).data('id'));
+            });
 
-        // Script for automatic tab switching based on server response (TempData)
-        @if (TempData["success"] != null)
-        {
-            <text>
-                // On a successful operation, always switch back to the list tab.
-                $('#list-tab').tab('show');
-            </text>
-        }
-        else if (TempData["error"] != null)
-        {
-            <text>
-                // If there was a validation error on create, switch to the create tab to show the errors.
-                $('#create-tab').tab('show');
-            </text>
-        }
-    });
-</script>
+            @if (TempData["success"] != null)
+            {
+                <text>
+                    $('#list-tab').tab('show');
+                </text>
+            }
+            else if (TempData["error"] != null)
+            {
+                <text>
+                    $('#create-tab').tab('show');
+                </text>
+            }
+        });
+    </script>
 }

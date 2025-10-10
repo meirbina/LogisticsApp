@@ -11,7 +11,7 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
-                
+
                 <li class="nav-header">MAIN</li>
                 <li class="nav-item">
                     <a asp-controller="Dashboard" asp-action="Index" class="nav-link @Html.IsActive("Dashboard")">
@@ -19,7 +19,7 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-              
+
                 <li class="nav-header">OPERATIONS</li>
                 <!-- Shipment Creation Group -->
                 <li class="nav-item @Html.IsMenuActive(new[] { "Shipment", "MerchantShipment" })">
@@ -86,7 +86,6 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item"><a asp-controller="Employees" asp-action="Index" class="nav-link @Html.IsActive("Employees")"><i class="far fa-circle nav-icon"></i><p>Manage Employees</p></a></li>
-                        <li class="nav-item"><a asp-controller="TerminalSwitch" asp-action="Index" class="nav-link @Html.IsActive("TerminalSwitch")"><i class="far fa-circle nav-icon"></i><p>Switch Terminal</p></a></li>
                         <li class="nav-item"><a asp-controller="Merchant" asp-action="Index" class="nav-link @Html.IsActive("Merchant")"><i class="far fa-circle nav-icon"></i><p>Manage Merchants</p></a></li>
                         <li class="nav-item"><a asp-controller="Driver" asp-action="Index" class="nav-link @Html.IsActive("Driver")"><i class="far fa-circle nav-icon"></i><p>Manage Drivers</p></a></li>
                         <li class="nav-item"><a asp-controller="CustomerType" asp-action="Index" class="nav-link @Html.IsActive("CustomerType")"><i class="far fa-circle nav-icon"></i><p>Customer Types</p></a></li>
@@ -113,8 +112,12 @@
                 </li>
 
                 <!-- Omitted non-logistics links like Admission, Exam Master, etc. for clarity -->
-                
+
             </ul>
         </nav>
     </div>
 </aside>
+
+
+
+
